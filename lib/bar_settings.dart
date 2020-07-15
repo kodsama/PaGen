@@ -1,0 +1,110 @@
+import 'package:flutter/material.dart';
+
+class SettingsBar extends StatefulWidget {
+  SettingsBar();
+
+  @override
+  _SettingsBarState createState() => _SettingsBarState();
+}
+
+class _SettingsBarState extends State<SettingsBar> {
+  double _pa_scale = 3;
+  String _pa_theme = "Random";
+  final List<String> _pa_scales = [
+    "Ultra Passive",
+    "More passive than agressive",
+    "Passive-agressive",
+    "More agressive than passive+",
+    "Agressive",
+    "Super agressive",
+  ];
+  final int _pa_scale_levels = 6;
+  final List<String> _pa_themes = [
+    "Random",
+    "Public",
+    "Laundry",
+    "Kitchen"
+    ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 0.25 * (MediaQuery.of(context).size.height - 80),
+      child:Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Text(
+            'Desired level',
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Container(
+                width: MediaQuery.of(context).size.width * 0.08,
+                child: Text('Passive',
+                  style: TextStyle(fontSize: 8.0,),
+                  ),
+              ),
+              Container(
+                width: MediaQuery.of(context).size.width * 0.80,
+                child: Slider(
+                  min: 0,
+                  max: this._pa_scale_levels.toDouble(),
+                  divisions: this._pa_scale_levels,
+                  label: 'Level',
+                  value: this._pa_scale,
+                  onChanged: (value) {
+                    setState(() {
+                      this._pa_scale = value;
+                    });
+                  },
+                ),
+              ), // Slider
+              Container(
+                width: MediaQuery.of(context).size.width * 0.11,
+                child: Text('Aggressive',
+                  style: TextStyle(fontSize: 8.0,),
+                  ),
+              ),
+            ], // children
+          ), // Row
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Container(
+                width: MediaQuery.of(context).size.width * 0.3,
+                child: Text('Background'),
+              ),
+              DropdownButton<String>(
+                value: this._pa_theme,
+                items: this._pa_themes
+                    .map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+                // icon: Icon(Icons.arrow_downward),
+                iconSize: 24,
+                elevation: 16,
+                style: TextStyle(
+                  color: Colors.orange
+                ),
+                underline: Container(
+                  height: 5,
+                  // color: Colors.orange,
+                ),
+                onChanged: (String newValue) {
+                  setState(() {
+                    this._pa_theme = newValue;
+                    print(this._pa_theme);
+                  });
+                },
+              ), // DropdownButton
+            ], // children
+          ), // Row
+        ], // children
+      ), // Column
+    ); // Container
+  }
+}
