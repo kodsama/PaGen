@@ -3,6 +3,7 @@ import 'bar_settings.dart';
 import 'bar_quote.dart';
 import 'bar_bottom.dart';
 
+
 class BuildPages extends StatelessWidget {
   BuildPages();
 

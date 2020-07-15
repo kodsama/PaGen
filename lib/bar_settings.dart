@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 
+
 class SettingsBar extends StatefulWidget {
   SettingsBar();
 
   @override
   _SettingsBarState createState() => _SettingsBarState();
 }
+
 
 class _SettingsBarState extends State<SettingsBar> {
   double _pa_scale = 3;
@@ -34,7 +36,7 @@ class _SettingsBarState extends State<SettingsBar> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Text(
-            'Desired level',
+            'More passive or agressive today?',
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -72,8 +74,8 @@ class _SettingsBarState extends State<SettingsBar> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Container(
-                width: MediaQuery.of(context).size.width * 0.3,
-                child: Text('Background'),
+                width: MediaQuery.of(context).size.width * 0.45,
+                child: Text('Frustration source'),
               ),
               DropdownButton<String>(
                 value: this._pa_theme,
@@ -90,10 +92,7 @@ class _SettingsBarState extends State<SettingsBar> {
                 style: TextStyle(
                   color: Colors.orange
                 ),
-                underline: Container(
-                  height: 5,
-                  // color: Colors.orange,
-                ),
+                underline: Container(),
                 onChanged: (String newValue) {
                   setState(() {
                     this._pa_theme = newValue;
