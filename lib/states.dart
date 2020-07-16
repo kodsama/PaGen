@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import "dart:math";
-
+import 'dart:math';
 
 Map<int, Color> color = {
   50:Color.fromRGBO(4,131,184, .1),
@@ -16,6 +15,9 @@ Map<int, Color> color = {
 };
 final MaterialColor appColor = MaterialColor(0xFFEFF294, color);
 final MaterialColor postItColor = MaterialColor(0xFFF2EFBD, color);
+
+final String appShortName = 'PAGen';
+final String appLongName = 'Passive Agressive GENerator';
 
 List<String> _quotes = [
     '''
@@ -41,41 +43,60 @@ List<String> _quotes = [
     ''',
     ];
 
+class MyStatefulWidget extends StatefulWidget {
+  final Widget child;
 
-class QuoteBar extends StatefulWidget {
-  QuoteBar();
+  const MyStatefulWidget({Key key, @required this.child}) : super(key: key);
+
+  static MyStatefulWidgetState of(BuildContext context) {
+    return context.dependOnInheritedWidgetOfExactType<MyInheritedWidget>().data;
+  }
 
   @override
-  _QuoteBarState createState() => _QuoteBarState();
+  State<StatefulWidget> createState() {
+    return MyStatefulWidgetState();
+  }
 }
 
+class MyStatefulWidgetState extends State<MyStatefulWidget> {
+  String _quote = _quotes[Random().nextInt(_quotes.length)];
+  int _counterValue = 0;
 
-class _QuoteBarState extends State<QuoteBar> {
+  String get quote => _quote;
+  int get counterValue => _counterValue;
 
-  final _random = new Random();
-  String _quote;
+  void pickRandomQuote() {
+    setState(() {
+      _quote = _quotes[Random().nextInt(_quotes.length)];
+    });
+  }
 
-  String getRandomQuote() {
-    _quote = _quotes[_random.nextInt(_quotes.length)];;
-    return _quote;
+  void addCounterBy1() {
+    setState(() {
+      _counterValue += 1;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 0.65 * (MediaQuery.of(context).size.height - 80),
-      width: MediaQuery.of(context).size.width,
-      color: postItColor,
-      child:Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Text(
-            getRandomQuote(),
-            style: TextStyle(fontSize: 15, height: 2),
-            textAlign: TextAlign.center,
-          ), // Text
-        ], // children
-      ), // Column
-    ); // Container
+    return MyInheritedWidget(
+      child: widget.child,
+      data: this,
+    );
+  }
+}
+
+class MyInheritedWidget extends InheritedWidget {
+  final MyStatefulWidgetState data;
+
+  MyInheritedWidget({
+    Key key,
+    @required Widget child,
+    @required this.data,
+  }) : super(key: key, child: child);
+
+  @override
+  bool updateShouldNotify(InheritedWidget oldWidget) {
+    return true;
   }
 }

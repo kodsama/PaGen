@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 
 
-class SettingsBar extends StatefulWidget {
-  SettingsBar();
+class Settings extends StatefulWidget {
+  Settings();
 
   @override
-  _SettingsBarState createState() => _SettingsBarState();
+  _SettingsState createState() => _SettingsState();
 }
 
 
-class _SettingsBarState extends State<SettingsBar> {
+class _SettingsState extends State<Settings> {
   double _pa_scale = 3;
   String _pa_theme = "Random";
   final List<String> _pa_scales = [
@@ -31,7 +31,7 @@ class _SettingsBarState extends State<SettingsBar> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 0.25 * (MediaQuery.of(context).size.height - 80),
+      height: 0.2 * (MediaQuery.of(context).size.height - 80),
       child:Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[

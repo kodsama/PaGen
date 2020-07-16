@@ -1,33 +1,14 @@
 import 'package:flutter/material.dart';
-import 'bar_app.dart';
-import 'pages.dart';
 
+import 'states.dart';
+import 'appbar.dart';
+import 'settings.dart';
+import 'quote.dart';
 
-Map<int, Color> color = {
-  50:Color.fromRGBO(4,131,184, .1),
-  100:Color.fromRGBO(4,131,184, .2),
-  200:Color.fromRGBO(4,131,184, .3),
-  300:Color.fromRGBO(4,131,184, .4),
-  400:Color.fromRGBO(4,131,184, .5),
-  500:Color.fromRGBO(4,131,184, .6),
-  600:Color.fromRGBO(4,131,184, .7),
-  700:Color.fromRGBO(4,131,184, .8),
-  800:Color.fromRGBO(4,131,184, .9),
-  900:Color.fromRGBO(4,131,184, 1),
-};
-final MaterialColor appColor = MaterialColor(0xFFEFF294, color);
-final MaterialColor postItColor = MaterialColor(0xFFF2EFBD, color);
+void main() => runApp(App());
 
-final String appShortName = 'PAGen';
-final String appLongName = 'Passive Agressive GENerator';
-
-
-void main() {
-  runApp(MyApp());
-}
-
-
-class MyApp extends StatelessWidget {
+class App extends StatelessWidget {
+  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -36,14 +17,13 @@ class MyApp extends StatelessWidget {
         primarySwatch: appColor,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: MyHomePage(title: appLongName),
-    );
+      home: HomePage(title: appLongName),
+      ); // MaterialApp
   }
 }
 
-
-class MyHomePage extends StatelessWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+class HomePage extends StatelessWidget {
+  HomePage({Key key, this.title}) : super(key: key);
 
   final String title;
   final double app_bar_height = 60;
@@ -52,7 +32,18 @@ class MyHomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: BuildAppBar(this.title, this.app_bar_height),
-      body: BuildPages(),
-    ); // Scaffold
+      body: MyStatefulWidget(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Settings(),
+            QuoteContainer(
+              child: QuoteText(),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
