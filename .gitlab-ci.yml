@@ -11,6 +11,9 @@ flutter_test:
 
 flutter_build_android:
   stage: build
+  only:
+    refs:
+      - master
   before_script:
     - flutter packages get
     - flutter clean
