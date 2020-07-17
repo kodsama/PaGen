@@ -4,6 +4,7 @@ import 'states.dart';
 import 'appbar.dart';
 import 'settings.dart';
 import 'quote.dart';
+import 'db_handler.dart';
 
 void main() => runApp(App());
 

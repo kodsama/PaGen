@@ -7,7 +7,7 @@ AppBar BuildAppBar(String title, double height_px) {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Image.asset(
-        'images/trollface.png',
+        'assets/images/trollface.png',
         fit: BoxFit.contain,
         height: height_px,
         ),

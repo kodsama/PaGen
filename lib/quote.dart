@@ -11,7 +11,7 @@ class QuoteContainer extends StatelessWidget {
   })  : super(key: key);
 
   void onPressed(BuildContext context) {
-    MyStatefulWidget.of(context).pickRandomQuote();
+    MyStatefulWidget.of(context).pickQuote();
   }
 
   @override
@@ -47,6 +47,7 @@ class QuoteText extends StatefulWidget {
 
 class QuoteTextState extends State<QuoteText> {
   String quote;
+  String source;
   double fontSize;
 
   @override
@@ -54,17 +55,34 @@ class QuoteTextState extends State<QuoteText> {
     super.didChangeDependencies();
     MyStatefulWidgetState data = MyStatefulWidget.of(context);
     quote = data.quote;
+    source = data.source;
     fontSize = 20.0;
   }
 
   @override
   Widget build(BuildContext context) {
-    return Text(
-      "$quote",
-      style: TextStyle(
-        fontSize: fontSize,
-        color: Colors.black,
-      ),
-    );
+    return Column (
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget> [
+        Text(
+          '$quote',
+          style: TextStyle(
+            fontSize: fontSize,
+            color: Colors.black,
+          ),
+        ),
+        SizedBox(height: 60), // Spacing
+        Align(
+          alignment: Alignment.centerRight,
+          child: Text(
+            '- $source',
+            style: TextStyle(
+              fontSize: fontSize - 5,
+              color: Colors.grey,
+            ),
+          ), // Text
+        ), // Align
+      ] // children
+    ); // Column
   }
 }
