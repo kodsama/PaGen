@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'states.dart';
+
 
 class Settings extends StatefulWidget {
   Settings();
@@ -10,29 +12,49 @@ class Settings extends StatefulWidget {
 
 
 class _SettingsState extends State<Settings> {
-  double _pa_scale = 3;
-  String _pa_theme = "Random";
+  String pa_theme;
+  double pa_scale;
+
   final List<String> _pa_scales = [
-    "Ultra Passive",
-    "More passive than agressive",
+    "Passive",
     "Passive-agressive",
-    "More agressive than passive+",
     "Agressive",
-    "Super agressive",
   ];
-  final int _pa_scale_levels = 6;
+  final int _pa_scale_levels = 2;
   final List<String> _pa_themes = [
     "Random",
     "Public",
     "Laundry",
     "Kitchen"
     ];
+  
+   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    MyStatefulWidgetState data = MyStatefulWidget.of(context);
+    pa_scale = data.pa_scale;
+    pa_theme = data.pa_theme;
+  }
+
+  void sliderChange (double value) {
+    setState(() {
+      pa_scale = value;
+      MyStatefulWidget.of(context).updatePaScale(value);
+    });
+  }
+
+  void themeChange (String value) {
+    setState(() {
+      pa_theme = value;
+      MyStatefulWidget.of(context).updatePaTheme(value);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Container(
       height: 0.2 * (MediaQuery.of(context).size.height - 80),
-      child:Column(
+      child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Text(
@@ -54,14 +76,10 @@ class _SettingsState extends State<Settings> {
                   max: this._pa_scale_levels.toDouble(),
                   divisions: this._pa_scale_levels,
                   label: 'Level',
-                  value: this._pa_scale,
-                  onChanged: (value) {
-                    setState(() {
-                      this._pa_scale = value;
-                    });
-                  },
-                ),
-              ), // Slider
+                  value: pa_scale,
+                  onChanged: (double value) { sliderChange(value); },
+                  ), // Slider
+              ), // Container
               Container(
                 width: MediaQuery.of(context).size.width * 0.11,
                 child: Text('Aggressive',
@@ -78,7 +96,7 @@ class _SettingsState extends State<Settings> {
                 child: Text('Frustration source'),
               ),
               DropdownButton<String>(
-                value: this._pa_theme,
+                value: pa_theme,
                 items: this._pa_themes
                     .map<DropdownMenuItem<String>>((String value) {
                   return DropdownMenuItem<String>(
@@ -93,12 +111,7 @@ class _SettingsState extends State<Settings> {
                   color: Colors.orange
                 ),
                 underline: Container(),
-                onChanged: (String newValue) {
-                  setState(() {
-                    this._pa_theme = newValue;
-                    print(this._pa_theme);
-                  });
-                },
+                onChanged:  (String value) { themeChange(value); },
               ), // DropdownButton
             ], // children
           ), // Row
