@@ -28,6 +28,20 @@ class _SettingsState extends State<Settings> {
     "Kitchen"
     ];
 
+  void sliderChange (double value) {
+    setState(() {
+      this._pa_scale = value;
+    });
+    // print('sliderChange to ${this._pa_scale}');
+  }
+
+  void themeChange (String value) {
+    setState(() {
+      this._pa_theme = value;
+    });
+    // print('themeChange to ${this._pa_theme}');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -55,13 +69,9 @@ class _SettingsState extends State<Settings> {
                   divisions: this._pa_scale_levels,
                   label: 'Level',
                   value: this._pa_scale,
-                  onChanged: (value) {
-                    setState(() {
-                      this._pa_scale = value;
-                    });
-                  },
-                ),
-              ), // Slider
+                  onChanged: (double value) { sliderChange(value); },
+                  ), // Slider
+              ), // Container
               Container(
                 width: MediaQuery.of(context).size.width * 0.11,
                 child: Text('Aggressive',
@@ -93,12 +103,7 @@ class _SettingsState extends State<Settings> {
                   color: Colors.orange
                 ),
                 underline: Container(),
-                onChanged: (String newValue) {
-                  setState(() {
-                    this._pa_theme = newValue;
-                    print(this._pa_theme);
-                  });
-                },
+                onChanged:  (String value) { themeChange(value); },
               ), // DropdownButton
             ], // children
           ), // Row
