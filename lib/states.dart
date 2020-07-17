@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
 
-import 'db_handler.dart';
-
 Map<int, Color> color = {
   50:Color.fromRGBO(4,131,184, .1),
   100:Color.fromRGBO(4,131,184, .2),
@@ -21,6 +19,30 @@ final MaterialColor postItColor = MaterialColor(0xFFF2EFBD, color);
 final String appShortName = 'PAGen';
 final String appLongName = 'Passive Agressive GENerator';
 
+List<String> _quotes = [
+    '''
+    “Love without sacrifice is like theft”
+    ― Nassim Nicholas Taleb
+    ''',
+    '''
+    “When introverts are in conflict with each other...it may require a map in order to follow all the silences, nonverbal cues and passive-aggressive behaviors!”
+    ― Adam S. McHugh 
+    ''',
+    '''
+    “Anger's like a battery that leaks acid right out of me
+    And it starts from the heart 'til it reaches my outer me”
+    ― Criss Jami, Venus in Arms 
+    ''',
+    '''
+    “Lingering, bottled-up anger never reveals the 'true colors' of an individual. It, on the contrary, becomes all mixed up, rotten, confused, forms a highly combustible, chemical compound then explodes as something foreign, something very different than one's natural self.”
+    ― Criss Jami, Healology 
+    ''',
+    '''
+    “To let friendship die away by negligence and silence is certainly not wise. It is voluntarily to throw away one of the greatest comforts of this weary pilgrimage." ~Samuel Johnson”
+    ― Edward M. Hallowell
+    ''',
+    ];
+
 class MyStatefulWidget extends StatefulWidget {
   final Widget child;
 
@@ -37,24 +59,15 @@ class MyStatefulWidget extends StatefulWidget {
 }
 
 class MyStatefulWidgetState extends State<MyStatefulWidget> {
-  List<QuoteModel> _quotes = [];
-  String _quote = 'Nope';//_quotes[Random().nextInt(_quotes.length)];
+  String _quote = _quotes[Random().nextInt(_quotes.length)];
   int _counterValue = 0;
 
   String get quote => _quote;
   int get counterValue => _counterValue;
 
-  void pickRandomQuote() async {
-    if (_quotes.length == 0) {
-      var results = await DatabaseHandler.instance.retrieveAllQuotes();
-      int count = results.length;
-      for (int i = 0; i < count; i++) {
-        _quotes.add(QuoteModel.fromMap(results[i]));
-      }
-    }
+  void pickRandomQuote() {
     setState(() {
-      QuoteModel chosen = _quotes[Random().nextInt(_quotes.length)];
-      _quote = chosen.text;
+      _quote = _quotes[Random().nextInt(_quotes.length)];
     });
   }
 
