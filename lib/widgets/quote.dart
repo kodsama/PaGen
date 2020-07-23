@@ -1,22 +1,14 @@
 import 'package:flutter/material.dart';
 
-import 'states.dart';
+import '../states.dart';
 
-class QuoteContainer extends StatelessWidget {
+class QuoteWidget extends StatelessWidget {
   final Widget child;
 
-  QuoteContainer({
-    Key key,
-    @required this.child,
-  })  : super(key: key);
+  QuoteWidget({Key key, @required this.child}): super(key: key);
 
   void onPressed(BuildContext context) {
     MyStatefulWidget.of(context).pickQuote();
-  }
-
-  @override
-  State<StatefulWidget> createState() {
-    return QuoteTextState();
   }
 
   @override
@@ -80,9 +72,9 @@ class QuoteTextState extends State<QuoteText> {
               fontSize: fontSize - 5,
               color: Colors.grey,
             ),
-          ), // Text
-        ), // Align
-      ] // children
-    ); // Column
+          ),
+        ),
+      ]
+    );
   }
 }
