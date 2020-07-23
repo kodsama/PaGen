@@ -134,7 +134,7 @@ _saveQuote(String quote, String origin, int pa, String theme) async {
       theme: theme,
       source: 'Custom',
   ));
-  // print('Saved: \'$quote\', \'$origin\', $pa, $theme');
+  print('Saved: \'$quote\', \'$origin\', $pa, $theme');
   MyStatefulWidget.of(context).refreshQuotes();
   Navigator.pop(context, "Bang! Saved!");
   }

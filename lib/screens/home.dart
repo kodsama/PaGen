@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../states.dart';
 import '../widgets/appbar.dart';
 import '../widgets/settings.dart';
 import '../widgets/quote.dart';

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import '../widgets/appbar.dart';
 import '../widgets/add_quote.dart';
-import '../states.dart';
 
 class AddQuoteScreen extends StatelessWidget {
   AddQuoteScreen({Key key}) : super(key: key);

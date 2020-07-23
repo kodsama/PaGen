@@ -4,7 +4,7 @@ import 'dart:math';
 import 'models/quote.dart';
 import 'db_helper.dart';
 
-Map<int, Color> color = {
+const Map<int, Color> color = {
   50:Color.fromRGBO(4,131,184, .1),
   100:Color.fromRGBO(4,131,184, .2),
   200:Color.fromRGBO(4,131,184, .3),
@@ -16,8 +16,8 @@ Map<int, Color> color = {
   800:Color.fromRGBO(4,131,184, .9),
   900:Color.fromRGBO(4,131,184, 1),
 };
-final MaterialColor appColor = MaterialColor(0xFFEFF294, color);
-final MaterialColor postItColor = MaterialColor(0xFFF2EFBD, color);
+const MaterialColor appColor = MaterialColor(0xFFEFF294, color);
+const MaterialColor postItColor = MaterialColor(0xFFF2EFBD, color);
 
 final String appShortName = 'PAGen';
 final String appLongName = 'Passive Agressive Generator';
