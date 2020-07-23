@@ -1,51 +1,46 @@
 import 'package:flutter/material.dart';
 
-import 'states.dart';
+import '../states.dart';
 
 
-class Settings extends StatefulWidget {
-  Settings();
+class SettingsWidget extends StatefulWidget {
+  SettingsWidget({Key key}): super(key: key);
 
   @override
   _SettingsState createState() => _SettingsState();
 }
 
 
-class _SettingsState extends State<Settings> {
-  String pa_theme;
-  double pa_scale;
+class _SettingsState extends State<SettingsWidget> {
+  String paTheme;
+  double paScale;
 
-  final List<String> _pa_scales = [
-    "Passive",
-    "Passive-agressive",
-    "Agressive",
-  ];
-  final int _pa_scale_levels = 2;
-  final List<String> _pa_themes = [
+  final int _paScaleLevels = 2;
+  final List<String> _paThemes = [
     "Random",
     "Public",
     "Laundry",
     "Kitchen"
     ];
   
-   @override
+  @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     MyStatefulWidgetState data = MyStatefulWidget.of(context);
-    pa_scale = data.pa_scale;
-    pa_theme = data.pa_theme;
+    paScale = data.paScale;
+    paTheme = data.paTheme;
   }
 
   void sliderChange (double value) {
     setState(() {
-      pa_scale = value;
+      paScale = value;
       MyStatefulWidget.of(context).updatePaScale(value);
     });
   }
 
   void themeChange (String value) {
     setState(() {
-      pa_theme = value;
+      paTheme = value;
       MyStatefulWidget.of(context).updatePaTheme(value);
     });
   }
@@ -73,21 +68,21 @@ class _SettingsState extends State<Settings> {
                 width: MediaQuery.of(context).size.width * 0.80,
                 child: Slider(
                   min: 0,
-                  max: this._pa_scale_levels.toDouble(),
-                  divisions: this._pa_scale_levels,
+                  max: this._paScaleLevels.toDouble(),
+                  divisions: this._paScaleLevels,
                   label: 'Level',
-                  value: pa_scale,
+                  value: paScale,
                   onChanged: (double value) { sliderChange(value); },
-                  ), // Slider
-              ), // Container
+                  ),
+              ),
               Container(
                 width: MediaQuery.of(context).size.width * 0.11,
                 child: Text('Aggressive',
                   style: TextStyle(fontSize: 8.0,),
                   ),
               ),
-            ], // children
-          ), // Row
+            ],
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
@@ -96,8 +91,8 @@ class _SettingsState extends State<Settings> {
                 child: Text('Frustration source'),
               ),
               DropdownButton<String>(
-                value: pa_theme,
-                items: this._pa_themes
+                value: paTheme,
+                items: this._paThemes
                     .map<DropdownMenuItem<String>>((String value) {
                   return DropdownMenuItem<String>(
                     value: value,
@@ -112,11 +107,11 @@ class _SettingsState extends State<Settings> {
                 ),
                 underline: Container(),
                 onChanged:  (String value) { themeChange(value); },
-              ), // DropdownButton
-            ], // children
-          ), // Row
-        ], // children
-      ), // Column
-    ); // Container
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
   }
 }

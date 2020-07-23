@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
 
-import 'db_handler.dart';
+import 'models/quote.dart';
+import 'db_helper.dart';
 
 Map<int, Color> color = {
   50:Color.fromRGBO(4,131,184, .1),
@@ -40,40 +41,56 @@ class MyStatefulWidgetState extends State<MyStatefulWidget> {
   List<QuoteModel> _quotes = [];
   String _quote = 'Tap here to load a note';
   String _source = '';
-  double _pa_scale = 1;
-  String _pa_theme = 'Random';
+  double _paScale = 1;
+  String _paTheme = 'Random';
+  final List<String> _paThemes = [
+    "Random",
+    "Public",
+    "Laundry",
+    "Kitchen"
+    ];
+  final List<String> _paScales = [
+    "Passive",
+    "Passive-agressive",
+    "Agressive",
+  ];
 
   String get quote => _quote;
   String get source => _source;
-  double get pa_scale => _pa_scale;
-  String get pa_theme => _pa_theme;
+  double get paScale => _paScale;
+  String get paTheme => _paTheme;
+  List<String> get paThemes => _paThemes;
+  List<String> get paScales => _paScales;
 
   void updatePaScale(double value) {
-    _pa_scale = value;
+    _paScale = value;
   }
   void updatePaTheme(String theme) {
-    _pa_theme = theme;
+    _paTheme = theme;
+  }
+
+  void refreshQuotes() async {
+    var results = await DatabaseHelper.instance.retrieveAllQuotes();
+    for (int i = 0; i < results.length; i++) {
+      _quotes.add(QuoteModel.fromMap(results[i]));
+    }
   }
 
   void pickQuote() async {
     if (_quotes.length == 0) {
-      var results = await DatabaseHandler.instance.retrieveAllQuotes();
-      int count = results.length;
-      for (int i = 0; i < count; i++) {
-        _quotes.add(QuoteModel.fromMap(results[i]));
-      }
+      await refreshQuotes();
     }
     // Get sublist of quotes based on level and then topic with length checks
     List<QuoteModel> _byTheme = [];
     List<QuoteModel> _byLvl = [];
-    _byLvl = _quotes.where((e) => e.level == _pa_scale).toList();
+    _byLvl = _quotes.where((e) => e.level == _paScale).toList();
     if (_byLvl.length == 0) { // Not enough quotes, use full list
       _byTheme = _quotes;
     } else {
-      if (_pa_theme == 'Random') {
+      if (_paTheme == 'Random') {
         _byTheme = _byLvl; // Doesn't matter which theme we use
       } else {
-        _byTheme = _byLvl.where((e) => e.theme == _pa_theme).toList();
+        _byTheme = _byLvl.where((e) => e.theme == _paTheme).toList();
       }
       if (_byTheme.length == 0) _byTheme = _byLvl; // Not enough, use level
     }
