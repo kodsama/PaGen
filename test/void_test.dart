@@ -3,4 +3,8 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'package:pagen/main.dart';
 
-void main() {}
+void main() {
+  test('Dummy test', () {
+  
+  });
+}

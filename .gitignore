@@ -40,5 +40,14 @@ app.*.symbols
 # Obfuscation related
 app.*.map.json
 
+# Fastlane
+**/ios/*.ipa
+**/ios/*.app.dSYM.zip# These are optional
+android/fastlane/report.xml
+ios/fastlane/report.xml
+ios/fastlane/Preview.html
+ios/fastlane/metadata/review_information
+ios/fastlane/metadata/trade_representative_contact_information
+
 # Exceptions to above rules.
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
