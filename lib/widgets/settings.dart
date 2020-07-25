@@ -48,7 +48,7 @@ class _SettingsState extends State<SettingsWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 0.2 * (MediaQuery.of(context).size.height - 80),
+      height: 0.2 * (MediaQuery.of(context).size.height),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
