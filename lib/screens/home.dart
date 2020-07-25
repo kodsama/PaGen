@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../widgets/appbar.dart';
 import '../widgets/settings.dart';
 import '../widgets/quote.dart';
+import '../widgets/drawer.dart';
 import 'add_quote.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -22,6 +23,7 @@ class HomeScreen extends StatelessWidget {
   Scaffold _portraitHome(BuildContext context) {
     return Scaffold(
       appBar: AppBarWidget(),
+      drawer: DrawerWidget(),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,

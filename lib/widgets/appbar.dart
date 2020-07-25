@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 
 class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
   AppBarWidget({Key key}): super(key: key);
@@ -19,14 +20,16 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
             fit: BoxFit.contain,
             height: 60,
             ),
-            Container(
-              padding: const EdgeInsets.all(5.0),
-              child: Text(
+            Expanded(
+              child: AutoSizeText(
                 title,
                 style: TextStyle(
-                  fontSize: 18,
+                  fontSize: 20,
                   color: Colors.black,
-                ),
+                  ),
+                minFontSize: 12,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
               ),
             ),
           ],
