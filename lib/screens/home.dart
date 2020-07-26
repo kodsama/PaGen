@@ -1,13 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:unicorndial/unicorndial.dart';
 
+import '../states.dart';
 import '../widgets/appbar.dart';
 import '../widgets/settings.dart';
 import '../widgets/quote.dart';
 import '../widgets/drawer.dart';
+import '../models/quote.dart';
 import 'add_quote.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   HomeScreen({Key key}) : super(key: key);
+
+  @override
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  QuoteModel quote;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    MyStatefulWidgetState data = MyStatefulWidget.of(context);
+    quote = data.quote;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,20 +49,14 @@ class HomeScreen extends StatelessWidget {
           QuoteWidget(child: QuoteText()),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => AddQuoteScreen()),
-          );
-        },
-        child: Icon(Icons.add),
-        backgroundColor: Colors.green,
-      ),
+      floatingActionButton: _floatButtons(
+        context, 
+        UnicornOrientation.VERTICAL,
+        ),
     );
   }
 
-Scaffold _landscapeHome(BuildContext context) {
+  Scaffold _landscapeHome(BuildContext context) {
     return Scaffold(
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -54,16 +65,63 @@ Scaffold _landscapeHome(BuildContext context) {
           QuoteWidget(child: QuoteText()),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: _floatButtons(
+        context, 
+        UnicornOrientation.HORIZONTAL,
+        ),
+    );
+  }
+
+  UnicornDialer _floatButtons(BuildContext context, int orientation) {
+    var childButtons = List<UnicornButton>();
+
+    childButtons.add(UnicornButton(
+      hasLabel: true,
+      labelText: 'Drop a 💩',
+      currentButton: FloatingActionButton(
+        heroTag: 'Drop a 💩',
+        backgroundColor: Colors.blueAccent,
+        mini: true,
+        child: Icon(Icons.add),
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => AddQuoteScreen()),
-          );
+            MaterialPageRoute(builder: (context) => AddQuoteScreen()));
         },
-        child: Icon(Icons.add),
-        backgroundColor: Colors.green,
-      ),
-    );
+      )));
+
+    childButtons.add(UnicornButton(
+      hasLabel: true,
+      labelText: 'This quote rocks',
+      currentButton: FloatingActionButton(
+        heroTag: 'Awesome',
+        backgroundColor: Colors.greenAccent,
+        mini: true,
+        child: Icon(Icons.thumb_up),
+        onPressed: () {
+          MyStatefulWidget.of(context).incrementQuoteGrade(quote, 1);
+        },
+      )));
+
+    childButtons.add(UnicornButton(
+      hasLabel: true,
+      labelText: 'This quote sucks',
+      currentButton: FloatingActionButton(
+        heroTag: 'Disgusting',
+        backgroundColor: Colors.redAccent,
+        mini: true,
+        child: Icon(Icons.thumb_down),
+        onPressed: () {
+          MyStatefulWidget.of(context).incrementQuoteGrade(quote, -1);
+        },
+      )));
+
+    return UnicornDialer(
+      backgroundColor: Color.fromRGBO(255, 255, 255, 0.6),
+      parentButtonBackground: Colors.redAccent,
+      orientation: orientation,
+      parentButton: Icon(Icons.all_inclusive),
+      childButtons: childButtons
+      );
   }
 }

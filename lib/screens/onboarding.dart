@@ -70,15 +70,15 @@ class _OnboardScreenState extends State<OnboardScreen> {
       PageViewModel(
         title: 'If you are real bad...🤦',
         body:
-            'You can add your own by tapping there! 🖖',
-        image: Center(child: Image.asset('assets/images/onboard_add.png', height: 175.0)),
+            'Drop your own 💩 or rate them by tapping there! 🖖',
+        image: Center(child: Image.asset('assets/images/onboard_menu.png', height: 175.0)),
         decoration: pageDecoration,
         ),
       PageViewModel(
         title: 'So long suckers! 🚀',
         body: ''' Don't forget to give (constructive) feedback
           \n\n\n (Or buy the useless author a cup of tea 🍵)
-          (at https://www.buymeacoffee.com/kodsama)''',
+          (https://www.buymeacoffee.com/kodsama)''',
         image: Center(child: Image.asset('assets/images/coffee_mug.png', height: 175.0)),
         decoration: pageDecoration,
         ),

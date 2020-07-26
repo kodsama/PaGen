@@ -128,6 +128,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  fluttertoast:
+    dependency: "direct main"
+    description:
+      name: fluttertoast
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "7.0.1+1"
   image:
     dependency: transitive
     description:
@@ -336,6 +343,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.3.0-nullsafety"
+  unicorndial:
+    dependency: "direct main"
+    description:
+      name: unicorndial
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.1.5"
   url_launcher:
     dependency: "direct main"
     description:
