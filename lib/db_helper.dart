@@ -68,6 +68,19 @@ class DatabaseHelper {
     // print('Inserted ${quote.id}');
   }
 
+  gradeQuote(QuoteModel quote, int increment) async {
+    quote.grade = quote.grade + increment;
+    final Database db = await database;
+    await db.update(
+      DatabaseHelper.table,
+      quote.toMap(),
+      where: 'id = ?',
+      whereArgs: [quote.id],
+      conflictAlgorithm: ConflictAlgorithm.replace
+    );
+    // print('Incremented grade of quote ${quote.id} with $increment');
+  }
+
   Future<List<Map<String, dynamic>>> retrieveAllQuotes() async {
     final Database db = await database;
 

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 
 import '../states.dart';
+import '../models/quote.dart';
 
 class QuoteWidget extends StatelessWidget {
   final Widget child;
@@ -39,8 +40,7 @@ class QuoteText extends StatefulWidget {
 }
 
 class QuoteTextState extends State<QuoteText> {
-  String quote;
-  String source;
+  QuoteModel quote;
   double fontSize;
 
   @override
@@ -48,7 +48,6 @@ class QuoteTextState extends State<QuoteText> {
     super.didChangeDependencies();
     MyStatefulWidgetState data = MyStatefulWidget.of(context);
     quote = data.quote;
-    source = data.source;
     fontSize = 20.0;
   }
 
@@ -58,7 +57,7 @@ class QuoteTextState extends State<QuoteText> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget> [
         AutoSizeText(
-          '$quote',
+          '${quote.text}',
           style: TextStyle(
             fontSize: fontSize,
             color: Colors.black
@@ -71,7 +70,7 @@ class QuoteTextState extends State<QuoteText> {
         Align(
           alignment: Alignment.centerRight,
           child: AutoSizeText(
-            '- $source',
+            '- ${quote.source}',
             style: TextStyle(
               fontSize: fontSize - 5,
               color: Colors.grey
@@ -81,7 +80,34 @@ class QuoteTextState extends State<QuoteText> {
             overflow: TextOverflow.ellipsis,
           ),
         ),
+        SizedBox(height: 10), // Spacing
+        Align(
+          alignment: Alignment.centerRight,
+          child: AutoSizeText(
+            _getGradeText(quote.grade),
+            style: TextStyle(
+              fontSize: fontSize,
+              color: Colors.grey
+            ),
+            minFontSize: 12,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
       ]
     );
+  }
+
+  String _getGradeText(int grade) {
+    if (grade == null) {
+      return '';
+    }
+    if (grade > 0) {
+      return '👍 $grade';
+    }
+    if (grade < 0) {
+      return '👎 $grade';
+    }
+    return '🤷 $grade';
   }
 }

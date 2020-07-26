@@ -36,7 +36,8 @@ class _AddQuoteState extends State<AddQuoteWidget> {
       scrollDirection: Axis.vertical,
       child: Column(
         children: <Widget> [
-          Text('Enter your quote and click on the face',
+          SizedBox(height: 10),
+          Text('Drop your 💩 here...',
             style: TextStyle(fontSize: 20.0,),
           ),
           SizedBox(height: 30),
@@ -124,8 +125,12 @@ class _AddQuoteState extends State<AddQuoteWidget> {
               ),
            ],
           ),
-          SizedBox(height: 30),
-          RaisedButton(
+          SizedBox(height: 20),
+          FlatButton(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(50.0),
+              side: BorderSide(color: Colors.white)
+            ),
             color: Colors.white,
             onPressed: () async {
               _saveQuote(etQuote.text, etOrigin.text, paScale, paTheme);
@@ -148,6 +153,7 @@ _saveQuote(String quote, String origin, int pa, String theme) async {
       level: pa,
       theme: theme,
       source: 'Custom',
+      grade: 0,
   ));
   print('Saved: \'$quote\', \'$origin\', $pa, $theme');
   MyStatefulWidget.of(context).refreshQuotes();

@@ -6,6 +6,7 @@ class QuoteModel {
   String theme;
   String text;
   String source;
+  int grade;
 
   QuoteModel({
     this.id,
@@ -13,7 +14,8 @@ class QuoteModel {
     this.level,
     this.theme,
     this.text,
-    this.source
+    this.source,
+    this.grade,
   });
 
   Map<String, dynamic> toMap() {
@@ -24,6 +26,7 @@ class QuoteModel {
       'theme': theme,
       'text': text,
       'source': source,
+      'grade': grade,
     };
   }
 
@@ -34,20 +37,23 @@ class QuoteModel {
     this.level = result['level'];
     this.text = result['text'];
     this.source = result['source'];
+    this.grade = result['grade'];
   }
 
   @override
   String toString() {
-    return 'QuoteModel{id: $id, orig:$origin, lvl: $level, theme: $theme, text: $text, src: $source}';
+    return 'QuoteModel{id: $id, orig:$origin, lvl: $level, theme: $theme, text: $text, src: $source, grade: $grade}';
   }
 }
 
 String orderModelCreateString = '''
-  CREATE TABLE quotes(
-    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-    origin TEXT NOT NULL,
-    theme TEXT NOT NULL,
-    level INT NOT NULL,
-    text TEXT NOT NULL,
-    source TEXT)
+  CREATE TABLE "quotes" (
+    "id" INTEGER NOT NULL,
+    "origin" TEXT DEFAULT "Custom",
+    "level" INTEGER NOT NULL DEFAULT 1,
+    "theme" TEXT NOT NULL DEFAULT "Random",
+    "text" TEXT NOT NULL,
+    "source" TEXT DEFAULT "",
+    "grade" INTEGER NOT NULL DEFAULT 0,
+    PRIMARY KEY("id" AUTOINCREMENT));
   ''';

@@ -1,5 +1,6 @@
-import 'package:flutter/material.dart';
 import 'dart:math';
+import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import 'models/quote.dart';
 import 'db_helper.dart';
@@ -39,15 +40,15 @@ class MyStatefulWidget extends StatefulWidget {
 
 class MyStatefulWidgetState extends State<MyStatefulWidget> {
   List<QuoteModel> _quotes = [];
-  String _quote = 'Tap here to load a note';
-  String _source = '';
+  QuoteModel _quote = QuoteModel(text: 'Tap here to load a note', source: '');
   double _paScale = 1;
   String _paTheme = 'Random';
   final List<String> _paThemes = [
     "Random",
     "Public",
     "Laundry",
-    "Kitchen"
+    "Kitchen",
+    "Custom"
     ];
   final List<String> _paScales = [
     "Passive",
@@ -55,8 +56,7 @@ class MyStatefulWidgetState extends State<MyStatefulWidget> {
     "Agressive",
   ];
 
-  String get quote => _quote;
-  String get source => _source;
+  QuoteModel get quote => _quote;
   double get paScale => _paScale;
   String get paTheme => _paTheme;
   List<String> get paThemes => _paThemes;
@@ -94,11 +94,29 @@ class MyStatefulWidgetState extends State<MyStatefulWidget> {
       }
       if (_byTheme.length == 0) _byTheme = _byLvl; // Not enough, use level
     }
-    QuoteModel chosen = _byTheme[Random().nextInt(_byTheme.length)];
     setState(() {
-      _quote = chosen.text;
-      _source = chosen.source;
+      _quote = _byTheme[Random().nextInt(_byTheme.length)];
     });
+  }
+
+  void incrementQuoteGrade(QuoteModel quote, int increment) {
+    String toast;
+    if (quote != null) {
+      DatabaseHelper.instance.gradeQuote(quote, increment);
+      toast = 'Mischief achieved!';
+    } else {
+      print('Quote is NULL!');
+      toast = 'Epic fail!';
+    }
+    Fluttertoast.showToast(
+      msg: toast,
+      toastLength: Toast.LENGTH_LONG,
+      gravity: ToastGravity.BOTTOM,
+      timeInSecForIosWeb: 1,
+      backgroundColor: Colors.grey,
+      textColor: Colors.white,
+      fontSize: 15.0
+    );
   }
 
   @override
