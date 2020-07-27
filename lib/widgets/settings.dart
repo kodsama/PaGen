@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
 
 import '../states.dart';
 import 'slider.dart';
@@ -54,7 +55,7 @@ class _SettingsState extends State<SettingsWidget> {
         children: <Widget>[
           SizedBox(height: 20),
           Text(
-            'More passive or agressive today?',
+            FlutterI18n.translate(context, 'settings.pa'),
           ),
           SizedBox(height: 10),
           _sliderCreate(),
@@ -70,7 +71,7 @@ class _SettingsState extends State<SettingsWidget> {
       children: <Widget>[
         Container(
           width: MediaQuery.of(context).size.width * 0.45,
-          child: Text('Frustration source'),
+          child: Text(FlutterI18n.translate(context, 'settings.theme')),
         ),
         DropdownButton<String>(
           value: paTheme,
@@ -121,7 +122,7 @@ class _SettingsState extends State<SettingsWidget> {
         child: Row(
           children: <Widget>[
             Text(
-              'Passive',
+              FlutterI18n.translate(context, 'settings.p'),
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: sliderHeight * .2,
@@ -165,7 +166,7 @@ class _SettingsState extends State<SettingsWidget> {
               width: sliderHeight * .1,
             ),
             Text(
-              'Aggressive',
+              FlutterI18n.translate(context, 'settings.a'),
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: sliderHeight * .2,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
 
 import '../states.dart';
 import '../models/quote.dart';
@@ -53,6 +54,12 @@ class QuoteTextState extends State<QuoteText> {
 
   @override
   Widget build(BuildContext context) {
+    if (quote == null) {
+      quote = QuoteModel(
+        text: FlutterI18n.translate(context, 'states.welcome'),
+        source: '',
+        );
+    }
     return Column (
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget> [

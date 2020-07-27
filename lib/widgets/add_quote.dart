@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
 
 import '../states.dart';
 import '../db_helper.dart';
@@ -37,7 +38,7 @@ class _AddQuoteState extends State<AddQuoteWidget> {
       child: Column(
         children: <Widget> [
           SizedBox(height: 10),
-          Text('Drop your 💩 here...',
+          Text(FlutterI18n.translate(context, 'add_quote.add'),
             style: TextStyle(fontSize: 20.0,),
           ),
           SizedBox(height: 30),
@@ -47,8 +48,8 @@ class _AddQuoteState extends State<AddQuoteWidget> {
             maxLines: null,
             decoration: InputDecoration(
               border: OutlineInputBorder(),
-              labelText: 'Quote',
-              hintText: 'Enter the quote here',
+              labelText: FlutterI18n.translate(context, 'add_quote.quote'),
+              hintText: FlutterI18n.translate(context, 'add_quote.quote_hint'),
             ),
           ),
           SizedBox(height: 10),
@@ -57,8 +58,8 @@ class _AddQuoteState extends State<AddQuoteWidget> {
             decoration: InputDecoration(
               border: OutlineInputBorder(),
               focusColor: Colors.red,
-              labelText: 'Source',
-              hintText: 'Enter the author here and click below',
+              labelText: FlutterI18n.translate(context, 'add_quote.src'),
+              hintText: FlutterI18n.translate(context, 'add_quote.src_hint'),
             ),
           ),
           SizedBox(height: 20),
@@ -70,7 +71,7 @@ class _AddQuoteState extends State<AddQuoteWidget> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget> [
-                  Text('PA level',
+                  Text(FlutterI18n.translate(context, 'add_quote.pa_scale'),
                       style: TextStyle(fontSize: 12.0,),
                     ),
                     DropdownButton<String>(
@@ -100,7 +101,7 @@ class _AddQuoteState extends State<AddQuoteWidget> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget> [
-                  Text('Theme',
+                  Text(FlutterI18n.translate(context, 'add_quote.theme'),
                     style: TextStyle(fontSize: 12.0,),
                   ),
                   DropdownButton<String>(
@@ -157,6 +158,6 @@ _saveQuote(String quote, String origin, int pa, String theme) async {
   ));
   print('Saved: \'$quote\', \'$origin\', $pa, $theme');
   MyStatefulWidget.of(context).refreshQuotes();
-  Navigator.pop(context, "Bang! Saved!");
+  Navigator.pop(context, FlutterI18n.translate(context, 'add_quote.saved'));
   }
 }

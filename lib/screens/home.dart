@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:unicorndial/unicorndial.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
 
 import '../states.dart';
 import '../widgets/appbar.dart';
@@ -77,9 +78,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
     childButtons.add(UnicornButton(
       hasLabel: true,
-      labelText: 'Drop a 💩',
+      labelText: FlutterI18n.translate(context, 'home.add_quote'),
       currentButton: FloatingActionButton(
-        heroTag: 'Drop a 💩',
+        heroTag: FlutterI18n.translate(context, 'home.add_quote'),
         backgroundColor: Colors.blueAccent,
         mini: true,
         child: Icon(Icons.add),
@@ -92,9 +93,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
     childButtons.add(UnicornButton(
       hasLabel: true,
-      labelText: 'This quote rocks',
+      labelText: FlutterI18n.translate(context, 'home.thumb_up'),
       currentButton: FloatingActionButton(
-        heroTag: 'Awesome',
+        heroTag: FlutterI18n.translate(context, 'home.thumb_up_label'),
         backgroundColor: Colors.greenAccent,
         mini: true,
         child: Icon(Icons.thumb_up),
@@ -105,9 +106,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
     childButtons.add(UnicornButton(
       hasLabel: true,
-      labelText: 'This quote sucks',
+      labelText: FlutterI18n.translate(context, 'home.thumb_down'),
       currentButton: FloatingActionButton(
-        heroTag: 'Disgusting',
+        heroTag: FlutterI18n.translate(context, 'home.thumb_down_label'),
         backgroundColor: Colors.redAccent,
         mini: true,
         child: Icon(Icons.thumb_down),

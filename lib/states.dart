@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
 
 import 'models/quote.dart';
 import 'db_helper.dart';
@@ -33,14 +34,12 @@ class MyStatefulWidget extends StatefulWidget {
   }
 
   @override
-  State<StatefulWidget> createState() {
-    return MyStatefulWidgetState();
-  }
+  State<StatefulWidget> createState() => MyStatefulWidgetState();
 }
 
 class MyStatefulWidgetState extends State<MyStatefulWidget> {
   List<QuoteModel> _quotes = [];
-  QuoteModel _quote = QuoteModel(text: 'Tap here to load a note', source: '');
+  QuoteModel _quote;
   double _paScale = 1;
   String _paTheme = 'Random';
   final List<String> _paThemes = [
@@ -103,10 +102,10 @@ class MyStatefulWidgetState extends State<MyStatefulWidget> {
     String toast;
     if (quote != null) {
       DatabaseHelper.instance.gradeQuote(quote, increment);
-      toast = 'Mischief achieved!';
+      toast = FlutterI18n.translate(context, 'states.success');
     } else {
       print('Quote is NULL!');
-      toast = 'Epic fail!';
+      toast = FlutterI18n.translate(context, 'states.fail');
     }
     Fluttertoast.showToast(
       msg: toast,
