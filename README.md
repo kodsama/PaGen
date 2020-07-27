@@ -49,6 +49,12 @@ Or release apk:
 flutter build apk --release
 ```
 
+For iOS:
+```
+flutter build ios --release --no-codesign
+```
+
+
 ## Update icon
 Change path of png icon under 'flutter_icons' in pubsec.yaml
 Run
