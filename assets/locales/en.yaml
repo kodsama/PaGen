@@ -1,0 +1,33 @@
+---
+title: 'Passive Agressive Generator'
+
+home:
+  add_quote: 'Drop a 💩'
+  thumb_up: 'This 💩 rocks! 👍'
+  thumb_up_label: 'Awesome'
+  thumb_down: 'This 💩 sucks! 👎'
+  thumb_down_label: 'Disgusting'
+  buy_tea: 'Buy a cup of 🍵'
+  view_demo: 'View demo again 👶'
+  god_mode: 'Omg, you found the god mode 😱'
+
+add_quote:
+  add: 'Drop your 💩 here...'
+  quote: 'Quote'
+  quote_hint: 'Enter the quote here'
+  src: 'Source'
+  src_hint: 'Enter the author here and click below'
+  pa_scale: 'PA level'
+  pa_theme: 'Theme'
+  saved: 'Bang! Saved!'
+
+settings:
+  pa: 'More passive or agressive today?'
+  theme: 'Frustration source'
+  p: 'Passive'
+  a: 'Aggressive'
+
+states:
+  welcome: 'Tap here to load a note'
+  success: 'Mischief achieved!'
+  fail: 'Epic fail!'

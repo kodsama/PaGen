@@ -7,6 +7,19 @@ import 'states.dart';
 import 'screens/splash.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+    DeviceOrientation.landscapeLeft,
+    DeviceOrientation.landscapeRight,
+  ]);
+  runApp(App());
+}
+
+class App extends StatelessWidget {
+  App();
   final FlutterI18nDelegate flutterI18nDelegate = FlutterI18nDelegate(
     translationLoader: FileTranslationLoader(
       useCountryCode: false,
@@ -15,24 +28,6 @@ void main() {
       // forcedLocale: Locale('fr'),
     ),
   );
-
-  WidgetsFlutterBinding.ensureInitialized();
-
-  flutterI18nDelegate.load(null);
-
-  SystemChrome.setPreferredOrientations([
-    DeviceOrientation.portraitUp,
-    DeviceOrientation.portraitDown,
-    DeviceOrientation.landscapeLeft,
-    DeviceOrientation.landscapeRight,
-  ]);
-  runApp(App(flutterI18nDelegate));
-}
-
-class App extends StatelessWidget {
-  final FlutterI18nDelegate flutterI18nDelegate;
-
-  App(this.flutterI18nDelegate);
 
   @override
   Widget build(BuildContext context) {
@@ -44,13 +39,18 @@ class App extends StatelessWidget {
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
         debugShowCheckedModeBanner: false,
-        home: SplashScreen(),
+        builder: FlutterI18n.rootAppBuilder(),
+        supportedLocales: [
+          Locale('en', ''),
+          Locale('fr', ''),
+          Locale('sv', ''),
+        ],
         localizationsDelegates: [
           flutterI18nDelegate,
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate
         ],
-        builder: FlutterI18n.rootAppBuilder(),
+        home: SplashScreen(),
       ),
     );
   }
