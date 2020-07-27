@@ -9,9 +9,12 @@ default_platform(:android)
 platform :android do
   desc "Build android aab and apk"
   lane :build_android do |options|
-    sh "./flutter_test.sh"
-    # Build AAB
+    # Run tests (deactivated, already done in gitlab-ci)
+    # sh "./flutter_test.sh"
+    # Clean before building
     sh "./flutter_build.sh --clean"
+    # Build AAB
+    sh "./flutter_build.sh"
     # Build APK
     sh "./flutter_build.sh --apk"
   end
@@ -20,7 +23,7 @@ platform :android do
   lane :deploy_android do |options|
     upload_to_play_store(
       track: options[:production] ? 'production' : options[:internal] ? 'internal' : options[:alpha] ? 'alpha' : 'beta',
-      aab: '../build/app/outputs/bundle/release/app.aab',
+      aab: '../build/app/outputs/bundle/release/app-release.aab',
       skip_upload_images: true,
       skip_upload_screenshots: true,
     )

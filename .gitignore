@@ -49,5 +49,10 @@ ios/fastlane/Preview.html
 ios/fastlane/metadata/review_information
 ios/fastlane/metadata/trade_representative_contact_information
 
+# Found over time
+*.pbxproj
+*.sqbpro
+*.lock
+
 # Exceptions to above rules.
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
