@@ -2,6 +2,27 @@
 
 Passive Aggressive Generator
 
+## Pipeline setup
+The project is running Gitlab-CI to test, build and deploy updates. In order for it to run, at least one gitlab-runner must be set-up with proper software and signing keys.
+Please run through these tutorials to set them up:
+These steps are based on:
+https://medium.com/appditto/automate-your-flutter-workflow-using-gitlab-ci-cd-and-fastlane-5872e758165a
+
+1. Install flutter
+https://flutter.dev/docs/get-started/install
+
+2. Install gitlab-CI runner
+https://docs.gitlab.com/runner/install/
+
+3. Set-up the Gitlab runner with these parameters:
+```
+URL: https://gitlab.com/
+Registration token: Check the CI setup page on gitlab
+Description: Whatever you want
+Tag: flutter
+Runner type: shell
+```
+
 ## Compile and test
 Go to the project home directory
 ```
