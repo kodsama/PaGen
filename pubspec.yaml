@@ -63,9 +63,7 @@ flutter:
   assets:
     - assets/
     - assets/images/
-    - assets/locales/en.yaml
-    - assets/locales/fr.yaml
-    - assets/locales/sv.yaml
+    - assets/locales/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

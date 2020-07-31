@@ -134,7 +134,9 @@ class _AddQuoteState extends State<AddQuoteWidget> {
             ),
             color: Colors.white,
             onPressed: () async {
-              _saveQuote(etQuote.text, etOrigin.text, paScale, paTheme);
+              Locale currLocale = Localizations.localeOf(context);
+              _saveQuote(etQuote.text, etOrigin.text,
+                currLocale.languageCode, paScale, paTheme);
             },
             child: Image.asset(
               'assets/images/trollface.png',
@@ -147,16 +149,18 @@ class _AddQuoteState extends State<AddQuoteWidget> {
     );
   }
 
-_saveQuote(String quote, String origin, int pa, String theme) async {
+_saveQuote(String quote, String origin, 
+    String lang, int pa, String theme) async {
   DatabaseHelper.instance.insertQuote(QuoteModel(
       text: quote,
       origin: origin,
+      locale: lang,
       level: pa,
       theme: theme,
       source: 'Custom',
       grade: 0,
   ));
-  print('Saved: \'$quote\', \'$origin\', $pa, $theme');
+  print('Saved: \'$quote\', \'$origin\', $lang, $pa, $theme');
   MyStatefulWidget.of(context).refreshQuotes();
   Navigator.pop(context, FlutterI18n.translate(context, 'add_quote.saved'));
   }
