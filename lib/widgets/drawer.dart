@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
 
 import '../states.dart';
 import '../screens/onboarding.dart';
@@ -30,14 +31,14 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           Container(
             height: 80.0,
             child: DrawerHeader(
-              child: Text('Omg, you found the god mode 😱'),
+              child: Text(FlutterI18n.translate(context, 'home.god_mode')),
               decoration: BoxDecoration(
                 color: appColor,
               ),
             ),
           ),
           ListTile(
-            title: Text('View demo again 👶'),
+            title: Text(FlutterI18n.translate(context, 'home.view_demo')),
             onTap: () {
               Navigator.of(context).push(
                 MaterialPageRoute(builder: (_) => OnboardScreen()),
@@ -45,7 +46,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
             },
           ),
           ListTile(
-            title: Text('Drop a 💩'),
+            title: Text(FlutterI18n.translate(context, 'home.add_quote')),
             onTap: () {
               Navigator.pop(context);
               Navigator.of(context).push(
@@ -54,21 +55,21 @@ class _DrawerWidgetState extends State<DrawerWidget> {
             },
           ),
           ListTile(
-            title: Text('This 💩rocks! 👍'),
+            title: Text(FlutterI18n.translate(context, 'home.thumb_up')),
             onTap: () {
               MyStatefulWidget.of(context).incrementQuoteGrade(quote, 1);
               Navigator.of(context).pop();
             },
           ),
           ListTile(
-            title: Text('This 💩sucks! 👎'),
+            title: Text(FlutterI18n.translate(context, 'home.thumb_down')),
             onTap: () {
               MyStatefulWidget.of(context).incrementQuoteGrade(quote, -1);
               Navigator.of(context).pop();
             },
           ),
           ListTile(
-            title: Text('Buy a cup of 🍵'),
+            title: Text(FlutterI18n.translate(context, 'home.buy_tea')),
             onTap: () {
               // Navigator.pop(context);
               _launchBuyMeCoffeeURL();

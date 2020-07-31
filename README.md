@@ -11,8 +11,15 @@ https://medium.com/appditto/automate-your-flutter-workflow-using-gitlab-ci-cd-an
 1. Install flutter
 https://flutter.dev/docs/get-started/install
 
-2. Install gitlab-CI runner
+
+2. Run flutter doctor to verify installation
+```
+flutter doctor -v
+```
+
+3. Install gitlab-CI runner
 https://docs.gitlab.com/runner/install/
+
 
 3. Set-up the Gitlab runner with these parameters:
 ```
@@ -22,6 +29,9 @@ Description: Whatever you want
 Tag: flutter
 Runner type: shell
 ```
+
+4. Get keys for signing the app, or setup a new one by following: https://flutter.dev/docs/deployment/android#signing-the-app
+
 
 ## Compile and test
 Go to the project home directory

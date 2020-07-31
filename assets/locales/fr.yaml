@@ -1,0 +1,33 @@
+---
+title: 'Passive Agressive Generator'
+
+home:
+  add_quote: 'Couler un 💩'
+  thumb_up: 'Cette 💩 déchire! 👍'
+  thumb_up_label: 'Awesome'
+  thumb_down: 'Cette 💩 crain! 👎'
+  thumb_down_label: 'Dégeulasse'
+  buy_tea: 'Offrir une tasse de 🍵'
+  view_demo: 'Voir la démo a nouveau 👶'
+  god_mode: 'Mon dieu, tu as trouvé le god mode 😱'
+
+add_quote:
+  add: 'Pose ta 💩 ici...'
+  quote: 'Citation'
+  quote_hint: 'Entre ta citation ici'
+  src: 'Source'
+  src_hint: 'Entre l''auteur ici et clique dessous'
+  pa_scale: 'Niveau de PA'
+  pa_theme: 'Theme'
+  saved: 'Bang! Sauvegardé!'
+
+settings:
+  pa: 'Plus passif or agressif aujourd''hui?'
+  theme: 'Source de frustration'
+  p: 'Passif'
+  a: 'Aggressif'
+
+states:
+  welcome: 'Tape ici pour charger une note'
+  success: 'Méfait accomplis!'
+  fail: 'Epic fail!'

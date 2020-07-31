@@ -1,0 +1,33 @@
+---
+title: 'Passive Agressive Generator'
+
+home:
+  add_quote: 'Släpp en 💩'
+  thumb_up: 'Den 💩 rockar! 👍'
+  thumb_up_label: 'Awesome'
+  thumb_down: 'This 💩 sucks! 👎'
+  thumb_down_label: 'Äcklig'
+  buy_tea: 'Ge en kopp 🍵'
+  view_demo: 'Se demo igen 👶'
+  god_mode: 'Omg, du har hittat den gudsläge 😱'
+
+add_quote:
+  add: 'Släpp din 💩 här...'
+  quote: 'Citat'
+  quote_hint: 'Ange citat här'
+  src: 'Källa'
+  src_hint: 'Ange författaren här och klicka nedan'
+  pa_scale: 'PA nivå'
+  pa_theme: 'Tema'
+  saved: 'Bang! Sparat!'
+
+settings:
+  pa: 'Mer passiv eller agressiv idag?'
+  theme: 'Frustrationskälla'
+  p: 'Passiv'
+  a: 'Aggressiv'
+
+states:
+  welcome: 'Trycka här för att ladda en anteckning'
+  success: 'Mischief uppnåt!'
+  fail: 'Epic fail!'
