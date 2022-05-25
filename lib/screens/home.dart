@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:unicorndial/unicorndial.dart';
+//import 'package:unicorndial/unicorndial.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 
 import '../states.dart';
@@ -50,10 +50,10 @@ class _HomeScreenState extends State<HomeScreen> {
           QuoteWidget(child: QuoteText()),
         ],
       ),
-      floatingActionButton: _floatButtons(
-        context, 
-        UnicornOrientation.VERTICAL,
-        ),
+      //floatingActionButton: _floatButtons(
+      //  context,
+      //  UnicornOrientation.VERTICAL,
+      //  ),
     );
   }
 
@@ -66,13 +66,13 @@ class _HomeScreenState extends State<HomeScreen> {
           QuoteWidget(child: QuoteText()),
         ],
       ),
-      floatingActionButton: _floatButtons(
-        context, 
-        UnicornOrientation.HORIZONTAL,
-        ),
+      //floatingActionButton: _floatButtons(
+      //  context,
+      //  UnicornOrientation.HORIZONTAL,
+      //  ),
     );
   }
-
+/*
   UnicornDialer _floatButtons(BuildContext context, int orientation) {
     var childButtons = List<UnicornButton>();
 
@@ -125,4 +125,5 @@ class _HomeScreenState extends State<HomeScreen> {
       childButtons: childButtons
       );
   }
+*/
 }
