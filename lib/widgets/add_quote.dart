@@ -4,22 +4,22 @@ import 'package:flutter_i18n/flutter_i18n.dart';
 import '../states.dart';
 import '../db_helper.dart';
 import '../models/quote.dart';
+import '../utils/app_logger.dart';
 
 class AddQuoteWidget extends StatefulWidget {
-  AddQuoteWidget({Key key}): super(key: key);
+  const AddQuoteWidget({super.key});
 
   @override
-  _AddQuoteState createState() => _AddQuoteState();
+  State<AddQuoteWidget> createState() => _AddQuoteState();
 }
 
-
 class _AddQuoteState extends State<AddQuoteWidget> {
-  String paTheme;
-  int paScale;
-  List<String> paScales;
-  List<String> paThemes;
-  TextEditingController etQuote = new TextEditingController();
-  TextEditingController etOrigin = new TextEditingController();
+  late String paTheme;
+  late int paScale;
+  late List<String> paScales;
+  late List<String> paThemes;
+  final TextEditingController etQuote = TextEditingController();
+  final TextEditingController etOrigin = TextEditingController();
 
   @override
   void didChangeDependencies() {
@@ -90,8 +90,8 @@ class _AddQuoteState extends State<AddQuoteWidget> {
                         color: Colors.orange
                       ),
                       underline: Container(),
-                      onChanged:  (String value) {
-                        paScale = paScales.indexOf(value);
+                      onChanged: (String? value) {
+                        if (value != null) paScale = paScales.indexOf(value);
                       },
                     ),
                 ],
@@ -120,38 +120,42 @@ class _AddQuoteState extends State<AddQuoteWidget> {
                       color: Colors.orange
                     ),
                     underline: Container(),
-                    onChanged:  (String value) {paTheme = value;},
+                    onChanged: (String? value) {
+                      if (value != null) paTheme = value;
+                    },
                   ),
                 ],
               ),
            ],
           ),
-          SizedBox(height: 20),
-          FlatButton(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(50.0),
-              side: BorderSide(color: Colors.white)
+          const SizedBox(height: 20),
+          TextButton(
+            style: TextButton.styleFrom(
+              backgroundColor: Colors.white,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(50.0),
+                side: const BorderSide(color: Colors.white),
+              ),
             ),
-            color: Colors.white,
-            onPressed: () async {
-              Locale currLocale = Localizations.localeOf(context);
-              _saveQuote(etQuote.text, etOrigin.text,
-                currLocale.languageCode, paScale, paTheme);
+            onPressed: () {
+              final Locale currLocale = Localizations.localeOf(context);
+              _saveQuote(etQuote.text, etOrigin.text, currLocale.languageCode,
+                  paScale, paTheme);
             },
             child: Image.asset(
               'assets/images/trollface.png',
               fit: BoxFit.contain,
               height: 80,
-              ),
+            ),
           ),
         ],
       ),
     );
   }
 
-_saveQuote(String quote, String origin, 
-    String lang, int pa, String theme) async {
-  DatabaseHelper.instance.insertQuote(QuoteModel(
+  Future<void> _saveQuote(
+      String quote, String origin, String lang, int pa, String theme) async {
+    await DatabaseHelper.instance.insertQuote(QuoteModel(
       text: quote,
       origin: origin,
       locale: lang,
@@ -159,9 +163,10 @@ _saveQuote(String quote, String origin,
       theme: theme,
       source: 'Custom',
       grade: 0,
-  ));
-  print('Saved: \'$quote\', \'$origin\', $lang, $pa, $theme');
-  MyStatefulWidget.of(context).refreshQuotes();
-  Navigator.pop(context, FlutterI18n.translate(context, 'add_quote.saved'));
+    ));
+    AppLogger.info("Saved quote: '$quote' ($origin, $lang, level $pa, $theme)");
+    if (!mounted) return;
+    MyStatefulWidget.of(context).refreshQuotes();
+    Navigator.pop(context, FlutterI18n.translate(context, 'add_quote.saved'));
   }
 }

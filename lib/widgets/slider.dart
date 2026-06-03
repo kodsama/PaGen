@@ -8,7 +8,7 @@ class CustomSliderThumbCircle extends SliderComponentShape {
   final bool writeValue;
 
   const CustomSliderThumbCircle({
-    @required this.thumbRadius,
+    required this.thumbRadius,
     this.min = 0,
     this.max = 10,
     this.writeValue = true,
@@ -23,16 +23,16 @@ class CustomSliderThumbCircle extends SliderComponentShape {
   void paint(
     PaintingContext context,
     Offset center, {
-    Animation<double> activationAnimation,
-    Animation<double> enableAnimation,
-    bool isDiscrete,
-    TextPainter labelPainter,
-    RenderBox parentBox,
-    SliderThemeData sliderTheme,
-    TextDirection textDirection,
-    double value,
-    double textScaleFactor,
-    Size sizeWithOverflow,
+    required Animation<double> activationAnimation,
+    required Animation<double> enableAnimation,
+    required bool isDiscrete,
+    required TextPainter labelPainter,
+    required RenderBox parentBox,
+    required SliderThemeData sliderTheme,
+    required TextDirection textDirection,
+    required double value,
+    required double textScaleFactor,
+    required Size sizeWithOverflow,
   }) {
     final Canvas canvas = context.canvas;
 
@@ -41,10 +41,12 @@ class CustomSliderThumbCircle extends SliderComponentShape {
       ..style = PaintingStyle.fill;
 
     String text = '';
-    if (writeValue) {text = getValue(value);}
+    if (writeValue) {
+      text = getValue(value);
+    }
 
-    TextSpan span = new TextSpan(
-      style: new TextStyle(
+    final TextSpan span = TextSpan(
+      style: TextStyle(
         fontSize: thumbRadius * .8,
         fontWeight: FontWeight.w700,
         color: sliderTheme.thumbColor,
@@ -52,7 +54,7 @@ class CustomSliderThumbCircle extends SliderComponentShape {
       text: text,
     );
 
-    TextPainter tp = new TextPainter(
+    final TextPainter tp = TextPainter(
         text: span,
         textAlign: TextAlign.center,
         textDirection: TextDirection.ltr);
@@ -71,15 +73,15 @@ class CustomSliderThumbCircle extends SliderComponentShape {
 
 class CustomSliderThumbRect extends SliderComponentShape {
   final double thumbRadius;
-  final thumbHeight;
+  final double thumbHeight;
   final int min;
   final int max;
 
   const CustomSliderThumbRect({
-    this.thumbRadius,
-    this.thumbHeight,
-    this.min,
-    this.max,
+    required this.thumbRadius,
+    required this.thumbHeight,
+    this.min = 0,
+    this.max = 10,
   });
 
   @override
@@ -91,16 +93,16 @@ class CustomSliderThumbRect extends SliderComponentShape {
   void paint(
     PaintingContext context,
     Offset center, {
-    Animation<double> activationAnimation,
-    Animation<double> enableAnimation,
-    bool isDiscrete,
-    TextPainter labelPainter,
-    RenderBox parentBox,
-    SliderThemeData sliderTheme,
-    TextDirection textDirection,
-    double value,
-    double textScaleFactor,
-    Size sizeWithOverflow,
+    required Animation<double> activationAnimation,
+    required Animation<double> enableAnimation,
+    required bool isDiscrete,
+    required TextPainter labelPainter,
+    required RenderBox parentBox,
+    required SliderThemeData sliderTheme,
+    required TextDirection textDirection,
+    required double value,
+    required double textScaleFactor,
+    required Size sizeWithOverflow,
   }) {
     final Canvas canvas = context.canvas;
 
@@ -114,14 +116,14 @@ class CustomSliderThumbRect extends SliderComponentShape {
       ..color = Colors.white
       ..style = PaintingStyle.fill;
 
-    TextSpan span = new TextSpan(
-        style: new TextStyle(
+    final TextSpan span = TextSpan(
+        style: TextStyle(
             fontSize: thumbHeight * .3,
             fontWeight: FontWeight.w700,
             color: sliderTheme.thumbColor,
             height: 0.9),
-        text: '${getValue(value)}');
-    TextPainter tp = new TextPainter(
+        text: getValue(value));
+    final TextPainter tp = TextPainter(
         text: span,
         textAlign: TextAlign.left,
         textDirection: TextDirection.ltr);

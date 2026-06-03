@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'dart:io';
 
 import 'models/quote.dart';
+import 'utils/app_logger.dart';
 
 class DatabaseHelper {
   //Create a private constructor
@@ -11,84 +12,79 @@ class DatabaseHelper {
 
   static const databaseName = 'quotes_database.db';
   static final DatabaseHelper instance = DatabaseHelper._();
-  static final table = 'quotes';
-  static final version = 1;
-  var dbPath;
+  static const table = 'quotes';
+  static const version = 1;
+  late String dbPath;
 
   Future<Database> get database async {
     // Construct the path to the app's writable database file:
-    var dbDir = await getDatabasesPath();
+    final dbDir = await getDatabasesPath();
     dbPath = join(dbDir, databaseName);
 
-    return await openDatabase(dbPath, version: version,
-      onOpen: _onOpen, onCreate: _onCreate);
+    return await openDatabase(dbPath,
+        version: version, onOpen: _onOpen, onCreate: _onCreate);
   }
 
   Future<bool> _isDbValid(Database db) async {
-    List tablesList = await db.rawQuery(
-      "SELECT * FROM sqlite_master WHERE name ='$table' and type='table'"
-      );
+    final tablesList = await db.rawQuery(
+        "SELECT * FROM sqlite_master WHERE name ='$table' and type='table'");
     if (tablesList.length != 1) {
-      print('Available tables in db: $tablesList');
+      AppLogger.warning('Available tables in db: $tablesList');
       return false;
     }
     return true;
   }
 
-  _onOpen(Database db) async {
-    // Database is open, print its version
-    print('db version ${await db.getVersion()}');
-    if (! await _isDbValid(db)) {
-      print('Invalid db, create a new one.');
-      db.close();
-      _onCreate(db, version);
+  Future<void> _onOpen(Database db) async {
+    AppLogger.debug('Opened database, version ${await db.getVersion()}');
+    if (!await _isDbValid(db)) {
+      AppLogger.warning('Invalid db, creating a new one.');
+      await db.close();
+      await _onCreate(db, version);
     }
-    // print('db validity = ${await _isDbValid(db)}');
   }
 
-  _onCreate(Database db, int version) async {
-    // await deleteDatabase(dbPath); // Delete any existing database
-    // await db.execute(orderModelCreateString);
-    var data = await rootBundle.load('assets/init_quotes.db');
-    List<int> bytes = data.buffer.asUint8List(
+  Future<void> _onCreate(Database db, int version) async {
+    final data = await rootBundle.load('assets/init_quotes.db');
+    final bytes = data.buffer.asUint8List(
       data.offsetInBytes,
-      data.lengthInBytes
+      data.lengthInBytes,
     );
     await File(dbPath).writeAsBytes(bytes);
-    
+    AppLogger.info('Initialized quotes database from bundled asset.');
   }
 
-  insertQuote(QuoteModel quote) async {
+  Future<void> insertQuote(QuoteModel quote) async {
     final Database db = await database;
     quote.id = await db.insert(
       DatabaseHelper.table,
       quote.toMap(),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
-    // print('Inserted ${quote.id}');
+    AppLogger.debug('Inserted quote ${quote.id}');
   }
 
-  gradeQuote(QuoteModel quote, int increment) async {
-    quote.grade = quote.grade + increment;
+  Future<void> gradeQuote(QuoteModel quote, int increment) async {
+    quote.grade = (quote.grade ?? 0) + increment;
     final Database db = await database;
     await db.update(
       DatabaseHelper.table,
       quote.toMap(),
       where: 'id = ?',
       whereArgs: [quote.id],
-      conflictAlgorithm: ConflictAlgorithm.replace
+      conflictAlgorithm: ConflictAlgorithm.replace,
     );
-    // print('Incremented grade of quote ${quote.id} with $increment');
+    AppLogger.debug('Updated grade of quote ${quote.id} by $increment');
   }
 
   Future<List<Map<String, dynamic>>> retrieveAllQuotes() async {
     final Database db = await database;
 
-    var results = await db.query(DatabaseHelper.table);
+    final results = await db.query(DatabaseHelper.table);
     return results;
   }
 
-  updateQuote(QuoteModel quote) async {
+  Future<void> updateQuote(QuoteModel quote) async {
     final db = await database;
 
     // Update the given Quote.
@@ -102,7 +98,7 @@ class DatabaseHelper {
     );
   }
 
-  deleteQuote(int id) async {
+  Future<void> deleteQuote(int id) async {
     final db = await database;
 
     await db.delete(

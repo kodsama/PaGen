@@ -8,15 +8,17 @@ import 'home.dart';
 import '../states.dart';
 
 class SplashScreen extends StatefulWidget {
+  const SplashScreen({super.key});
+
   @override
-  _SplashScreenState createState() => _SplashScreenState();
+  State<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen> with
-TickerProviderStateMixin  {
-  Locale appLanguage;
-  AnimationController controller;
-  Animation<double> animation;
+class _SplashScreenState extends State<SplashScreen>
+    with TickerProviderStateMixin {
+  Locale? appLanguage;
+  late AnimationController controller;
+  late Animation<double> animation;
 
   // Load quotes while the splashscreen is ongoing
   @override
@@ -49,24 +51,26 @@ TickerProviderStateMixin  {
     controller.forward();
   }
 
-  changeLanguage() async {
-    appLanguage =
-        appLanguage.languageCode == 'en' ? Locale('fr') : Locale('en');
+  Future<void> changeLanguage() async {
+    appLanguage = appLanguage?.languageCode == 'en'
+        ? const Locale('fr')
+        : const Locale('en');
     await FlutterI18n.refresh(context, appLanguage);
     setState(() {});
   }
 
-  Future checkFirstSeen() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool _seen = (prefs.getBool('seen') ?? false);
+  Future<void> checkFirstSeen() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final bool seen = prefs.getBool('seen') ?? false;
+    if (!mounted) return;
 
-    if (_seen) {
+    if (seen) {
       Navigator.of(context).pushReplacement(
-          new MaterialPageRoute(builder: (context) => new HomeScreen()));
+          MaterialPageRoute(builder: (context) => const HomeScreen()));
     } else {
       prefs.setBool('seen', true);
       Navigator.of(context).pushReplacement(
-          new MaterialPageRoute(builder: (context) => new OnboardScreen()));
+          MaterialPageRoute(builder: (context) => const OnboardScreen()));
     }
   }
 

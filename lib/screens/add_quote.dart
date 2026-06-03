@@ -4,7 +4,7 @@ import '../widgets/appbar.dart';
 import '../widgets/add_quote.dart';
 
 class AddQuoteScreen extends StatelessWidget {
-  AddQuoteScreen({Key key}) : super(key: key);
+  const AddQuoteScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -19,7 +19,8 @@ void main() {
 }
 
 class App extends StatelessWidget {
-  App();
+  App({super.key});
+
   final FlutterI18nDelegate flutterI18nDelegate = FlutterI18nDelegate(
     translationLoader: FileTranslationLoader(
       useCountryCode: false,

@@ -5,16 +5,15 @@ import '../states.dart';
 import 'slider.dart';
 
 class SettingsWidget extends StatefulWidget {
-  SettingsWidget({Key key}): super(key: key);
+  const SettingsWidget({super.key});
 
   @override
-  _SettingsState createState() => _SettingsState();
+  State<SettingsWidget> createState() => _SettingsState();
 }
 
-
 class _SettingsState extends State<SettingsWidget> {
-  String paTheme;
-  double paScale;
+  late String paTheme;
+  late double paScale;
 
   final int _paScaleLevels = 2;
   final List<String> _paThemes = [
@@ -75,21 +74,19 @@ class _SettingsState extends State<SettingsWidget> {
         ),
         DropdownButton<String>(
           value: paTheme,
-          items: this._paThemes
-              .map<DropdownMenuItem<String>>((String value) {
+          items: _paThemes.map<DropdownMenuItem<String>>((String value) {
             return DropdownMenuItem<String>(
               value: value,
               child: Text(value),
             );
           }).toList(),
-          // icon: Icon(Icons.arrow_downward),
           iconSize: 24,
           elevation: 16,
-          style: TextStyle(
-            color: Colors.orange
-          ),
+          style: const TextStyle(color: Colors.orange),
           underline: Container(),
-          onChanged:  (String value) { themeChange(value); },
+          onChanged: (String? value) {
+            if (value != null) themeChange(value);
+          },
         ),
       ],
     );
@@ -102,17 +99,17 @@ class _SettingsState extends State<SettingsWidget> {
     return Container(
       width: MediaQuery.of(context).size.width,
       height: sliderHeight,
-      decoration: new BoxDecoration(
-        borderRadius: new BorderRadius.all(
-          Radius.circular((sliderHeight * .3)),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.all(
+          Radius.circular(sliderHeight * .3),
         ),
-        gradient: new LinearGradient(
+        gradient: const LinearGradient(
             colors: [
               Colors.orange,
               Colors.red,
             ],
-            begin: const FractionalOffset(0.0, 0.0),
-            end: const FractionalOffset(1.0, 1.00),
+            begin: FractionalOffset(0.0, 0.0),
+            end: FractionalOffset(1.0, 1.00),
             stops: [0.0, 1.0],
             tileMode: TileMode.clamp),
       ),
@@ -138,8 +135,8 @@ class _SettingsState extends State<SettingsWidget> {
               child: Center(
                 child: SliderTheme(
                   data: SliderTheme.of(context).copyWith(
-                    activeTrackColor: Colors.white.withOpacity(1),
-                    inactiveTrackColor: Colors.white.withOpacity(.5),
+                    activeTrackColor: Colors.white.withValues(alpha: 1),
+                    inactiveTrackColor: Colors.white.withValues(alpha: .5),
                     trackHeight: 4.0,
                     thumbShape: CustomSliderThumbCircle(
                       thumbRadius: sliderHeight * .4,
@@ -147,10 +144,9 @@ class _SettingsState extends State<SettingsWidget> {
                       max: _paScaleLevels,
                       writeValue: false,
                     ),
-                    overlayColor: Colors.white.withOpacity(.4),
-                    //valueIndicatorColor: Colors.white,
+                    overlayColor: Colors.white.withValues(alpha: .4),
                     activeTickMarkColor: Colors.white,
-                    inactiveTickMarkColor: Colors.red.withOpacity(.7),
+                    inactiveTickMarkColor: Colors.red.withValues(alpha: .7),
                   ),
                   child: Slider(
                     max: _paScaleLevels.toDouble(),

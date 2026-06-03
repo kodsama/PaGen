@@ -3,7 +3,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 
 
 class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
-  AppBarWidget({Key key}): super(key: key);
+  const AppBarWidget({super.key});
 
   final String title = 'Passive Agressive Generator';
 
