@@ -35,6 +35,7 @@ dependencies:
   fluttertoast: ^9.1.0
   flutter_i18n: ^0.37.1
   logger: ^2.7.0
+  google_fonts: ^6.2.1
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -50,6 +51,9 @@ flutter_launcher_icons:
   image_path: "assets/images/trollface.png"
   android: true
   ios: true
+  macos:
+    generate: true
+    image_path: "assets/images/trollface.png"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

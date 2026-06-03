@@ -10,6 +10,11 @@ class MainFlutterWindow: NSWindow {
 
     RegisterGeneratedPlugins(registry: flutterViewController)
 
+    title =
+      Bundle.main.object(forInfoDictionaryKey: "CFBundleDisplayName") as? String
+      ?? Bundle.main.object(forInfoDictionaryKey: "CFBundleName") as? String
+      ?? "PAGen"
+
     super.awakeFromNib()
   }
 }

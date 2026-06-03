@@ -2,6 +2,9 @@
 title: 'Passive Agressive Generator'
 
 home:
+  tone_mid: 'Stark'
+  tap_hint: 'Tryck på kortet eller knappen för ett nytt citat'
+  new_note: 'Nytt citat'
   add_quote: 'Släpp en 💩'
   thumb_up: 'Den 💩 rockar! 👍'
   thumb_up_label: 'Awesome'

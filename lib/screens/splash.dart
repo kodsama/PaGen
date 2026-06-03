@@ -6,6 +6,7 @@ import 'package:flutter_i18n/flutter_i18n.dart';
 import 'onboarding.dart';
 import 'home.dart';
 import '../states.dart';
+import '../theme/app_theme.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -74,7 +75,7 @@ class _SplashScreenState extends State<SplashScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: appColor,
+      backgroundColor: AppColors.lemon,
       body: FadeTransition(
         opacity: animation,
         child: Center(

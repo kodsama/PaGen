@@ -28,19 +28,48 @@ class QuoteModel {
       'theme': theme,
       'text': text,
       'source': source,
-      'grade': grade,
+      'grade': grade ?? 0,
     };
   }
 
   QuoteModel.fromMap(Map<String, dynamic> result)
-      : id = result['id'] as int?,
+      : id = _readInt(result['id']),
         locale = result['locale'] as String?,
         origin = result['origin'] as String?,
         theme = result['theme'] as String?,
-        level = result['level'] as int?,
+        level = _readInt(result['level']),
         text = result['text'] as String?,
         source = result['source'] as String?,
-        grade = result['grade'] as int?;
+        grade = _readInt(result['grade']);
+
+  static int? _readInt(dynamic value) {
+    if (value == null) return null;
+    if (value is int) return value;
+    if (value is num) return value.toInt();
+    return int.tryParse(value.toString());
+  }
+
+  QuoteModel copyWith({
+    int? id,
+    String? locale,
+    String? origin,
+    int? level,
+    String? theme,
+    String? text,
+    String? source,
+    int? grade,
+  }) {
+    return QuoteModel(
+      id: id ?? this.id,
+      locale: locale ?? this.locale,
+      origin: origin ?? this.origin,
+      level: level ?? this.level,
+      theme: theme ?? this.theme,
+      text: text ?? this.text,
+      source: source ?? this.source,
+      grade: grade ?? this.grade,
+    );
+  }
 
   @override
   String toString() {

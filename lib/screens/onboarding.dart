@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 
 import 'home.dart';
-import '../states.dart';
+import '../theme/app_theme.dart';
 
 class OnboardScreen extends StatefulWidget {
   const OnboardScreen({super.key});
@@ -27,13 +27,13 @@ class _OnboardScreenState extends State<OnboardScreen> {
       titleTextStyle: TextStyle(fontSize: 25.0, fontWeight: FontWeight.w700),
       bodyTextStyle: bodyStyle,
       //descriptionPadding: EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
-      pageColor: postItColor,
+      pageColor: AppColors.notePaper,
       imagePadding: EdgeInsets.zero,
     );
 
     return IntroductionScreen(
       key: introKey,
-      globalBackgroundColor: appColor,
+      globalBackgroundColor: AppColors.cream,
       showSkipButton: true,
       showNextButton: true,
       next: const Icon(Icons.arrow_forward),

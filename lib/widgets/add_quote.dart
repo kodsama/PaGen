@@ -95,7 +95,9 @@ class _AddQuoteState extends State<AddQuoteWidget> {
                     style: TextStyle(color: Colors.orange),
                     underline: Container(),
                     onChanged: (String? value) {
-                      if (value != null) paScale = paScales.indexOf(value);
+                      if (value != null) {
+                        setState(() => paScale = paScales.indexOf(value));
+                      }
                     },
                   ),
                 ],
@@ -126,7 +128,7 @@ class _AddQuoteState extends State<AddQuoteWidget> {
                     style: TextStyle(color: Colors.orange),
                     underline: Container(),
                     onChanged: (String? value) {
-                      if (value != null) paTheme = value;
+                      if (value != null) setState(() => paTheme = value);
                     },
                   ),
                 ],

@@ -1,29 +1,34 @@
+import 'dart:async';
 import 'dart:math';
+
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import 'models/quote.dart';
 import 'db_helper.dart';
+import 'theme/app_theme.dart';
 import 'utils/app_logger.dart';
 
-const Map<int, Color> color = {
-  50: Color.fromRGBO(4, 131, 184, .1),
-  100: Color.fromRGBO(4, 131, 184, .2),
-  200: Color.fromRGBO(4, 131, 184, .3),
-  300: Color.fromRGBO(4, 131, 184, .4),
-  400: Color.fromRGBO(4, 131, 184, .5),
-  500: Color.fromRGBO(4, 131, 184, .6),
-  600: Color.fromRGBO(4, 131, 184, .7),
-  700: Color.fromRGBO(4, 131, 184, .8),
-  800: Color.fromRGBO(4, 131, 184, .9),
-  900: Color.fromRGBO(4, 131, 184, 1),
-};
-const MaterialColor appColor = MaterialColor(0xFFEFF294, color);
-const MaterialColor postItColor = MaterialColor(0xFFF2EFBD, color);
+// Legacy swatch used by splash until fully migrated.
+const MaterialColor appColor = MaterialColor(0xFFFFE566, <int, Color>{
+  50: AppColors.lemon,
+  100: AppColors.lemon,
+  200: AppColors.lemon,
+  300: AppColors.lemon,
+  400: AppColors.lemon,
+  500: AppColors.lemon,
+  600: AppColors.lemon,
+  700: AppColors.lemon,
+  800: AppColors.lemon,
+  900: AppColors.lemon,
+});
 
-final String appShortName = 'PAGen';
-final String appLongName = 'Passive Agressive Generator';
+/// Post-it background for the quote area (legacy name kept for quote widget).
+const Color postItColor = AppColors.postIt;
+
+const String appShortName = 'PAGen';
+const String appLongName = 'Passive Agressive Generator';
 
 class MyStatefulWidget extends StatefulWidget {
   final Widget child;
@@ -33,7 +38,12 @@ class MyStatefulWidget extends StatefulWidget {
   static MyStatefulWidgetState of(BuildContext context) {
     return context
         .dependOnInheritedWidgetOfExactType<MyInheritedWidget>()!
-        .data;
+        .state;
+  }
+
+  /// Subscribe to quote / grade changes (use in screen build methods).
+  static MyInheritedWidget watch(BuildContext context) {
+    return context.dependOnInheritedWidgetOfExactType<MyInheritedWidget>()!;
   }
 
   @override
@@ -43,107 +53,177 @@ class MyStatefulWidget extends StatefulWidget {
 class MyStatefulWidgetState extends State<MyStatefulWidget> {
   final List<QuoteModel> _quotes = [];
   QuoteModel? _quote;
-  double _paScale = 1;
+  int _paLevel = 1;
   String _paTheme = 'Random';
+  int _quoteRevision = 0;
+
   final List<String> _paThemes = [
-    "Random",
-    "Public",
-    "Laundry",
-    "Kitchen",
-    "Custom"
+    'Random',
+    'Public',
+    'Laundry',
+    'Kitchen',
+    'Custom',
   ];
+
   final List<String> _paScales = [
-    "Passive",
-    "Passive-agressive",
-    "Agressive",
+    'Passive',
+    'Passive-agressive',
+    'Agressive',
   ];
 
   QuoteModel? get quote => _quote;
-  double get paScale => _paScale;
+  int get quoteRevision => _quoteRevision;
+  int get paLevel => _paLevel;
+  double get paScale => _paLevel.toDouble();
   String get paTheme => _paTheme;
   List<String> get paThemes => _paThemes;
   List<String> get paScales => _paScales;
 
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) => _bootstrap());
+  }
+
+  Future<void> _bootstrap() async {
+    await refreshQuotes();
+    if (_quote == null && mounted) {
+      await pickQuote();
+    }
+  }
+
+  void updatePaLevel(int level) {
+    if (_paLevel == level) return;
+    setState(() => _paLevel = level);
+    pickQuote();
+  }
+
   void updatePaScale(double value) {
-    _paScale = value;
+    updatePaLevel(value.round());
   }
 
   void updatePaTheme(String theme) {
-    _paTheme = theme;
+    if (_paTheme == theme) return;
+    setState(() => _paTheme = theme);
+    pickQuote();
   }
 
   Future<void> refreshQuotes() async {
     final results = await DatabaseHelper.instance.retrieveAllQuotes();
-    for (int i = 0; i < results.length; i++) {
-      _quotes.add(QuoteModel.fromMap(results[i]));
-    }
-  }
-
-  void pickQuote() async {
-    if (_quotes.isEmpty) {
-      await refreshQuotes();
-    }
-    // Get sublist of quotes based on level and then topic with length checks
-    List<QuoteModel> byTheme = [];
-    List<QuoteModel> byLvl = [];
-    byLvl = _quotes.where((e) => e.level == _paScale).toList();
-    if (byLvl.isEmpty) {
-      // Not enough quotes, use full list
-      byTheme = _quotes;
-    } else {
-      if (_paTheme == 'Random') {
-        byTheme = byLvl; // Doesn't matter which theme we use
-      } else {
-        byTheme = byLvl.where((e) => e.theme == _paTheme).toList();
-      }
-      if (byTheme.isEmpty) byTheme = byLvl; // Not enough, use level
-    }
-    if (byTheme.isEmpty) return;
+    if (!mounted) return;
     setState(() {
-      _quote = byTheme[Random().nextInt(byTheme.length)];
+      _quotes
+        ..clear()
+        ..addAll(results.map(QuoteModel.fromMap));
     });
   }
 
-  void incrementQuoteGrade(QuoteModel? quote, int increment) {
-    String toast;
-    if (quote != null) {
-      DatabaseHelper.instance.gradeQuote(quote, increment);
-      toast = FlutterI18n.translate(context, 'states.success');
-    } else {
-      AppLogger.warning('Attempted to grade a null quote.');
-      toast = FlutterI18n.translate(context, 'states.fail');
+  Future<void> pickQuote() async {
+    if (_quotes.isEmpty) {
+      await refreshQuotes();
     }
+    if (_quotes.isEmpty || !mounted) return;
+
+    List<QuoteModel> pool = _quotes.where((e) => e.level == _paLevel).toList();
+    if (pool.isEmpty) pool = List<QuoteModel>.from(_quotes);
+
+    if (_paTheme != 'Random') {
+      final themed = pool.where((e) => e.theme == _paTheme).toList();
+      if (themed.isNotEmpty) pool = themed;
+    }
+
+    _publishQuote(pool[Random().nextInt(pool.length)]);
+  }
+
+  void _publishQuote(QuoteModel updated) {
+    setState(() {
+      _quote = updated;
+      _quoteRevision++;
+      final index = _quotes.indexWhere((q) => q.id == updated.id);
+      if (index >= 0) {
+        _quotes[index] = updated;
+      }
+    });
+  }
+
+  /// Bump the visible note's score (+1 / -1) and refresh the card immediately.
+  void bumpQuoteGrade(int increment) {
+    final current = _quote;
+    if (current?.id == null) {
+      AppLogger.warning('Attempted to grade without a loaded quote.');
+      _showToast(FlutterI18n.translate(context, 'states.fail'));
+      return;
+    }
+
+    final newGrade = (current!.grade ?? 0) + increment;
+    final updated = current.copyWith(grade: newGrade);
+    _publishQuote(updated);
+    _showToast(FlutterI18n.translate(context, 'states.success'));
+
+    unawaited(_persistGradeQuietly(updated));
+  }
+
+  Future<void> _persistGradeQuietly(QuoteModel quote) async {
+    try {
+      await DatabaseHelper.instance.persistQuoteGrade(quote);
+    } catch (e, st) {
+      AppLogger.warning(
+        'Failed to persist quote grade (UI already updated)',
+        error: e,
+        stackTrace: st,
+      );
+    }
+  }
+
+  void _showToast(String msg) {
     Fluttertoast.showToast(
-        msg: toast,
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.grey,
-        textColor: Colors.white,
-        fontSize: 15.0);
+      msg: msg,
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.BOTTOM,
+      backgroundColor: AppColors.ink,
+      textColor: Colors.white,
+      fontSize: 14,
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    // pickQuote(); // Comment out to load a random quote at startup
     return MyInheritedWidget(
-      data: this,
+      quote: _quote,
+      quoteRevision: _quoteRevision,
+      paLevel: _paLevel,
+      paTheme: _paTheme,
+      state: this,
       child: widget.child,
     );
   }
 }
 
 class MyInheritedWidget extends InheritedWidget {
-  final MyStatefulWidgetState data;
+  final QuoteModel? quote;
+  final int quoteRevision;
+  final int paLevel;
+  final String paTheme;
+  final MyStatefulWidgetState state;
 
   const MyInheritedWidget({
     super.key,
+    required this.quote,
+    required this.quoteRevision,
+    required this.paLevel,
+    required this.paTheme,
+    required this.state,
     required super.child,
-    required this.data,
   });
 
+  int get displayGrade => quote?.grade ?? 0;
+
   @override
-  bool updateShouldNotify(InheritedWidget oldWidget) {
-    return true;
+  bool updateShouldNotify(MyInheritedWidget oldWidget) {
+    return quoteRevision != oldWidget.quoteRevision ||
+        quote != oldWidget.quote ||
+        displayGrade != oldWidget.displayGrade ||
+        paLevel != oldWidget.paLevel ||
+        paTheme != oldWidget.paTheme;
   }
 }

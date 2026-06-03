@@ -2,6 +2,9 @@
 title: 'Passive Agressive Generator'
 
 home:
+  tone_mid: 'Piquant'
+  tap_hint: 'Tape la carte ou le bouton pour une autre note'
+  new_note: 'Nouvelle note'
   add_quote: 'Couler un 💩'
   thumb_up: 'Cette 💩 déchire! 👍'
   thumb_up_label: 'Awesome'

@@ -2,6 +2,9 @@
 title: 'Passive Agressive Generator'
 
 home:
+  tone_mid: 'Spicy'
+  tap_hint: 'Tap the card or button for another note'
+  new_note: 'New note'
   add_quote: 'Drop a 💩'
   thumb_up: 'This 💩 rocks! 👍'
   thumb_up_label: 'Awesome'

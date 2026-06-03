@@ -5,6 +5,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'states.dart';
 import 'screens/splash.dart';
+import 'theme/app_theme.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -35,10 +36,7 @@ class App extends StatelessWidget {
     return MyStatefulWidget(
       child: MaterialApp(
         title: appShortName,
-        theme: ThemeData(
-          primarySwatch: appColor,
-          visualDensity: VisualDensity.adaptivePlatformDensity,
-        ),
+        theme: AppTheme.light(),
         debugShowCheckedModeBanner: false,
         builder: FlutterI18n.rootAppBuilder(),
         supportedLocales: [

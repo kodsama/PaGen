@@ -38,9 +38,14 @@ class DatabaseHelper {
   Future<void> _onOpen(Database db) async {
     AppLogger.debug('Opened database, version ${await db.getVersion()}');
     if (!await _isDbValid(db)) {
-      AppLogger.warning('Invalid db, creating a new one.');
+      AppLogger.warning('Invalid db, re-seeding from bundled asset.');
       await db.close();
-      await _onCreate(db, version);
+      final data = await rootBundle.load('assets/init_quotes.db');
+      final bytes = data.buffer.asUint8List(
+        data.offsetInBytes,
+        data.lengthInBytes,
+      );
+      await File(dbPath).writeAsBytes(bytes);
     }
   }
 
@@ -65,16 +70,23 @@ class DatabaseHelper {
   }
 
   Future<void> gradeQuote(QuoteModel quote, int increment) async {
-    quote.grade = (quote.grade ?? 0) + increment;
+    final updated = quote.copyWith(grade: (quote.grade ?? 0) + increment);
+    await persistQuoteGrade(updated);
+    quote.grade = updated.grade;
+  }
+
+  Future<void> persistQuoteGrade(QuoteModel quote) async {
     final Database db = await database;
-    await db.update(
+    final rows = await db.update(
       DatabaseHelper.table,
-      quote.toMap(),
+      {'grade': quote.grade ?? 0},
       where: 'id = ?',
       whereArgs: [quote.id],
-      conflictAlgorithm: ConflictAlgorithm.replace,
     );
-    AppLogger.debug('Updated grade of quote ${quote.id} by $increment');
+    if (rows == 0) {
+      throw StateError('No quote updated for id ${quote.id}');
+    }
+    AppLogger.debug('Persisted grade ${quote.grade} for quote ${quote.id}');
   }
 
   Future<List<Map<String, dynamic>>> retrieveAllQuotes() async {
