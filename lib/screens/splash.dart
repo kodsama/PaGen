@@ -6,6 +6,7 @@ import 'package:flutter_i18n/flutter_i18n.dart';
 import 'onboarding.dart';
 import 'home.dart';
 import '../states.dart';
+import '../theme/app_theme.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -44,10 +45,7 @@ class _SplashScreenState extends State<SplashScreen>
       duration: const Duration(milliseconds: 1000),
       vsync: this,
     );
-    animation = CurvedAnimation(
-      parent: controller,
-      curve: Curves.easeIn
-    );
+    animation = CurvedAnimation(parent: controller, curve: Curves.easeIn);
     controller.forward();
   }
 
@@ -66,18 +64,18 @@ class _SplashScreenState extends State<SplashScreen>
 
     if (seen) {
       Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => const HomeScreen()));
+          MaterialPageRoute<void>(builder: (context) => const HomeScreen()));
     } else {
       prefs.setBool('seen', true);
       Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => const OnboardScreen()));
+          MaterialPageRoute<void>(builder: (context) => const OnboardScreen()));
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: appColor,
+      backgroundColor: AppColors.lemon,
       body: FadeTransition(
         opacity: animation,
         child: Center(

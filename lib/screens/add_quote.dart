@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../widgets/appbar.dart';
 import '../widgets/add_quote.dart';
+import '../widgets/appbar.dart';
 
 class AddQuoteScreen extends StatelessWidget {
   const AddQuoteScreen({super.key});
@@ -9,7 +9,7 @@ class AddQuoteScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBarWidget(),
+      appBar: const AppBarWidget(),
       body: AddQuoteWidget(),
     );
   }

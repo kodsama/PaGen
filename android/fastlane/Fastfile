@@ -1,5 +1,4 @@
-# Based on:
-# https://medium.com/appditto/automate-your-flutter-workflow-using-gitlab-ci-cd-and-fastlane-5872e758165a
+# Android release lanes used by GitHub Actions (see .github/workflows/release-android.yml).
 
 # Update fastlane automatically
 update_fastlane
@@ -9,7 +8,7 @@ default_platform(:android)
 platform :android do
   desc "Build android aab and apk"
   lane :build_android do |options|
-    # Run tests (deactivated, already done in gitlab-ci)
+    # Tests run in CI before release builds (see .github/workflows/ci.yml)
     # sh "./flutter_test.sh"
     # Clean before building
     sh "./flutter_build.sh --clean"

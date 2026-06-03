@@ -27,5 +27,10 @@ void main() {
       expect(restored.source, quote.source);
       expect(restored.grade, quote.grade);
     });
+
+    test('copyWith updates grade for live UI refresh', () {
+      final quote = QuoteModel(id: 1, text: 'Hi', grade: 2);
+      expect(quote.copyWith(grade: 3).grade, 3);
+    });
   });
 }
