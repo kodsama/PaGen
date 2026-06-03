@@ -5,6 +5,7 @@ import 'package:flutter_i18n/flutter_i18n.dart';
 
 import 'models/quote.dart';
 import 'db_helper.dart';
+import 'utils/app_logger.dart';
 
 const Map<int, Color> color = {
   50:Color.fromRGBO(4,131,184, .1),
@@ -27,19 +28,21 @@ final String appLongName = 'Passive Agressive Generator';
 class MyStatefulWidget extends StatefulWidget {
   final Widget child;
 
-  const MyStatefulWidget({Key key, @required this.child}) : super(key: key);
+  const MyStatefulWidget({super.key, required this.child});
 
   static MyStatefulWidgetState of(BuildContext context) {
-    return context.dependOnInheritedWidgetOfExactType<MyInheritedWidget>().data;
+    return context
+        .dependOnInheritedWidgetOfExactType<MyInheritedWidget>()!
+        .data;
   }
 
   @override
-  State<StatefulWidget> createState() => MyStatefulWidgetState();
+  State<MyStatefulWidget> createState() => MyStatefulWidgetState();
 }
 
 class MyStatefulWidgetState extends State<MyStatefulWidget> {
-  List<QuoteModel> _quotes = [];
-  QuoteModel _quote;
+  final List<QuoteModel> _quotes = [];
+  QuoteModel? _quote;
   double _paScale = 1;
   String _paTheme = 'Random';
   final List<String> _paThemes = [
@@ -55,7 +58,7 @@ class MyStatefulWidgetState extends State<MyStatefulWidget> {
     "Agressive",
   ];
 
-  QuoteModel get quote => _quote;
+  QuoteModel? get quote => _quote;
   double get paScale => _paScale;
   String get paTheme => _paTheme;
   List<String> get paThemes => _paThemes;
@@ -68,43 +71,45 @@ class MyStatefulWidgetState extends State<MyStatefulWidget> {
     _paTheme = theme;
   }
 
-  void refreshQuotes() async {
-    var results = await DatabaseHelper.instance.retrieveAllQuotes();
+  Future<void> refreshQuotes() async {
+    final results = await DatabaseHelper.instance.retrieveAllQuotes();
     for (int i = 0; i < results.length; i++) {
       _quotes.add(QuoteModel.fromMap(results[i]));
     }
   }
 
   void pickQuote() async {
-    if (_quotes.length == 0) {
+    if (_quotes.isEmpty) {
       await refreshQuotes();
     }
     // Get sublist of quotes based on level and then topic with length checks
-    List<QuoteModel> _byTheme = [];
-    List<QuoteModel> _byLvl = [];
-    _byLvl = _quotes.where((e) => e.level == _paScale).toList();
-    if (_byLvl.length == 0) { // Not enough quotes, use full list
-      _byTheme = _quotes;
+    List<QuoteModel> byTheme = [];
+    List<QuoteModel> byLvl = [];
+    byLvl = _quotes.where((e) => e.level == _paScale).toList();
+    if (byLvl.isEmpty) {
+      // Not enough quotes, use full list
+      byTheme = _quotes;
     } else {
       if (_paTheme == 'Random') {
-        _byTheme = _byLvl; // Doesn't matter which theme we use
+        byTheme = byLvl; // Doesn't matter which theme we use
       } else {
-        _byTheme = _byLvl.where((e) => e.theme == _paTheme).toList();
+        byTheme = byLvl.where((e) => e.theme == _paTheme).toList();
       }
-      if (_byTheme.length == 0) _byTheme = _byLvl; // Not enough, use level
+      if (byTheme.isEmpty) byTheme = byLvl; // Not enough, use level
     }
+    if (byTheme.isEmpty) return;
     setState(() {
-      _quote = _byTheme[Random().nextInt(_byTheme.length)];
+      _quote = byTheme[Random().nextInt(byTheme.length)];
     });
   }
 
-  void incrementQuoteGrade(QuoteModel quote, int increment) {
+  void incrementQuoteGrade(QuoteModel? quote, int increment) {
     String toast;
     if (quote != null) {
       DatabaseHelper.instance.gradeQuote(quote, increment);
       toast = FlutterI18n.translate(context, 'states.success');
     } else {
-      print('Quote is NULL!');
+      AppLogger.warning('Attempted to grade a null quote.');
       toast = FlutterI18n.translate(context, 'states.fail');
     }
     Fluttertoast.showToast(
@@ -131,11 +136,11 @@ class MyStatefulWidgetState extends State<MyStatefulWidget> {
 class MyInheritedWidget extends InheritedWidget {
   final MyStatefulWidgetState data;
 
-  MyInheritedWidget({
-    Key key,
-    @required Widget child,
-    @required this.data,
-  }) : super(key: key, child: child);
+  const MyInheritedWidget({
+    super.key,
+    required super.child,
+    required this.data,
+  });
 
   @override
   bool updateShouldNotify(InheritedWidget oldWidget) {

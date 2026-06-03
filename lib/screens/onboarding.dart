@@ -6,23 +6,25 @@ import '../states.dart';
 
 
 class OnboardScreen extends StatefulWidget {
+  const OnboardScreen({super.key});
+
   @override
-  _OnboardScreenState createState() => _OnboardScreenState();
+  State<OnboardScreen> createState() => _OnboardScreenState();
 }
 
 class _OnboardScreenState extends State<OnboardScreen> {
   final introKey = GlobalKey<IntroductionScreenState>();
 
-  void _onIntroEnd(context) {
+  void _onIntroEnd(BuildContext context) {
     Navigator.of(context).push(
-      MaterialPageRoute(builder: (_) => HomeScreen()),
+      MaterialPageRoute(builder: (_) => const HomeScreen()),
     );
   }
 
   @override
   Widget build(BuildContext context) {
     const bodyStyle = TextStyle(fontSize: 15.0);
-    const pageDecoration = const PageDecoration(
+    const pageDecoration = PageDecoration(
       titleTextStyle: TextStyle(fontSize: 25.0, fontWeight: FontWeight.w700),
       bodyTextStyle: bodyStyle,
       //descriptionPadding: EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
@@ -34,6 +36,7 @@ class _OnboardScreenState extends State<OnboardScreen> {
       key: introKey,
       globalBackgroundColor: appColor,
       showSkipButton: true,
+      showNextButton: true,
       next: const Icon(Icons.arrow_forward),
       skip: const Text('Skip'),
       done: const Text('Shoot!', style: TextStyle(fontWeight: FontWeight.w600)),

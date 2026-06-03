@@ -6,14 +6,17 @@ import '../states.dart';
 import '../screens/onboarding.dart';
 import '../screens/add_quote.dart';
 import '../models/quote.dart';
+import '../utils/app_logger.dart';
 
 class DrawerWidget extends StatefulWidget {
+  const DrawerWidget({super.key});
+
   @override
-  _DrawerWidgetState createState() => _DrawerWidgetState();
+  State<DrawerWidget> createState() => _DrawerWidgetState();
 }
 
 class _DrawerWidgetState extends State<DrawerWidget> {
-  QuoteModel quote;
+  QuoteModel? quote;
 
   @override
   void didChangeDependencies() {
@@ -80,14 +83,10 @@ class _DrawerWidgetState extends State<DrawerWidget> {
     );
   }
 
-  _launchBuyMeCoffeeURL() async {
-    const String url = 'https://www.buymeacoffee.com/kodsama';
-    WidgetsFlutterBinding.ensureInitialized();
-    await launch(url, forceWebView: true, enableJavaScript: true);
-    // if (await canLaunch(url)) {
-    //   await launch(url, forceWebView: true);
-    // } else {
-    //   print('Could not buy 🍵 at $url');
-    // }
+  Future<void> _launchBuyMeCoffeeURL() async {
+    final Uri url = Uri.parse('https://www.buymeacoffee.com/kodsama');
+    if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
+      AppLogger.warning('Could not open Buy Me a Coffee URL: $url');
+    }
   }
 }

@@ -1,13 +1,13 @@
 
 class QuoteModel {
-  int id;
-  String locale;
-  String origin;
-  int level;
-  String theme;
-  String text;
-  String source;
-  int grade;
+  int? id;
+  String? locale;
+  String? origin;
+  int? level;
+  String? theme;
+  String? text;
+  String? source;
+  int? grade;
 
   QuoteModel({
     this.id,
