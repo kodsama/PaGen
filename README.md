@@ -12,7 +12,7 @@
 <p align="center">
   <img alt="Flutter" src="https://img.shields.io/badge/Flutter-3.x-02569B?logo=flutter&logoColor=white"/>
   <img alt="Dart" src="https://img.shields.io/badge/Dart-3.x-0175C2?logo=dart&logoColor=white"/>
-  <img alt="License" src="https://img.shields.io/badge/License-AGPL%20v3-blue.svg"/>
+  <img alt="License" src="https://img.shields.io/badge/License-GPLv3-blue.svg"/>
 </p>
 
 ---
@@ -132,5 +132,5 @@ Android SDK and signing keys is required. Deployment uses Fastlane.
 
 ## License
 
-This project is licensed under the **GNU Affero General Public License v3.0**.
+This project is licensed under the **GNU General Public License v3.0**.
 See the [LICENSE](LICENSE) file for the full text.
