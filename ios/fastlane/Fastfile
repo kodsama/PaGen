@@ -1,5 +1,4 @@
-# Based on:
-# https://medium.com/appditto/automate-your-flutter-workflow-using-gitlab-ci-cd-and-fastlane-5872e758165a
+# iOS release lanes (not wired to GitHub Actions yet; run locally or add a workflow).
 
 # Automatically update fastlane
 update_fastlane

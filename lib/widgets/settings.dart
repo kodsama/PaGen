@@ -16,13 +16,8 @@ class _SettingsState extends State<SettingsWidget> {
   late double paScale;
 
   final int _paScaleLevels = 2;
-  final List<String> _paThemes = [
-    "Random",
-    "Public",
-    "Laundry",
-    "Kitchen"
-    ];
-  
+  final List<String> _paThemes = ["Random", "Public", "Laundry", "Kitchen"];
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -31,14 +26,14 @@ class _SettingsState extends State<SettingsWidget> {
     paTheme = data.paTheme;
   }
 
-  void sliderChange (double value) {
+  void sliderChange(double value) {
     setState(() {
       paScale = value;
       MyStatefulWidget.of(context).updatePaScale(value);
     });
   }
 
-  void themeChange (String value) {
+  void themeChange(String value) {
     setState(() {
       paTheme = value;
       MyStatefulWidget.of(context).updatePaTheme(value);
@@ -47,7 +42,7 @@ class _SettingsState extends State<SettingsWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: 0.2 * (MediaQuery.of(context).size.height),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -68,7 +63,7 @@ class _SettingsState extends State<SettingsWidget> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        Container(
+        SizedBox(
           width: MediaQuery.of(context).size.width * 0.45,
           child: Text(FlutterI18n.translate(context, 'settings.theme')),
         ),
@@ -114,8 +109,8 @@ class _SettingsState extends State<SettingsWidget> {
             tileMode: TileMode.clamp),
       ),
       child: Padding(
-        padding: EdgeInsets.fromLTRB(sliderHeight * paddingFactor,
-            2, sliderHeight * paddingFactor, 2),
+        padding: EdgeInsets.fromLTRB(
+            sliderHeight * paddingFactor, 2, sliderHeight * paddingFactor, 2),
         child: Row(
           children: <Widget>[
             Text(
@@ -125,7 +120,6 @@ class _SettingsState extends State<SettingsWidget> {
                 fontSize: sliderHeight * .2,
                 fontWeight: FontWeight.w700,
                 color: Colors.white,
-
               ),
             ),
             SizedBox(
@@ -153,7 +147,9 @@ class _SettingsState extends State<SettingsWidget> {
                     divisions: _paScaleLevels,
                     // label: 'Level',
                     value: paScale,
-                    onChanged: (double value) { sliderChange(value); },
+                    onChanged: (double value) {
+                      sliderChange(value);
+                    },
                   ),
                 ),
               ),

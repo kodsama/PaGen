@@ -93,8 +93,18 @@ flutter run
 
 ### Run tests and static analysis
 
+Run the full CI pipeline locally (format check, analyze, tests, dependency audit):
+
 ```bash
-flutter analyze
+./tool/ci.sh
+```
+
+Individual steps:
+
+```bash
+flutter pub get
+dart format --output=none --set-exit-if-changed lib test
+dart analyze --fatal-infos
 flutter test
 ```
 
@@ -126,9 +136,35 @@ dart run flutter_launcher_icons
 
 ## Continuous integration
 
-CI/CD runs on GitLab CI (see [`.gitlab-ci.yml`](.gitlab-ci.yml)) across `test`, `build`
-and `deploy` stages. A self‑hosted `gitlab-runner` tagged `flutter` with the Flutter SDK,
-Android SDK and signing keys is required. Deployment uses Fastlane.
+CI runs on [GitHub Actions](https://github.com/features/actions).
+
+### Checks (every push and PR to `main`)
+
+Workflow: [`.github/workflows/ci.yml`](.github/workflows/ci.yml)
+
+- Dependency install, format check, static analysis, and tests
+- Same steps as [`tool/ci.sh`](tool/ci.sh) — run that script locally before pushing
+
+### Android release builds and Play Store deploy
+
+Workflow: [`.github/workflows/release-android.yml`](.github/workflows/release-android.yml)
+
+Triggered manually from the GitHub **Actions** tab (**Run workflow**). Choose **none** to build
+only and download APK/AAB artifacts from the run; pick a Play Store track to deploy after the
+build.
+
+Configure these [repository secrets](https://docs.github.com/en/actions/security-guides/using-secrets-in-github-actions):
+
+| Secret | Purpose |
+| ------ | ------- |
+| `ANDROID_KEYSTORE_BASE64` | Release keystore file, base64-encoded |
+| `ANDROID_KEY_STORE_PASSWORD` | Keystore password |
+| `ANDROID_KEY_PASSWORD` | Key password |
+| `ANDROID_KEY_ALIAS` | Key alias |
+| `PLAY_STORE_JSON_KEY` | Google Play service account JSON (for deploy only) |
+
+Build and upload use Fastlane lanes in [`android/fastlane`](android/fastlane) (`build_android`,
+`deploy_android`).
 
 ## License
 

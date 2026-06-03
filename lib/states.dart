@@ -8,16 +8,16 @@ import 'db_helper.dart';
 import 'utils/app_logger.dart';
 
 const Map<int, Color> color = {
-  50:Color.fromRGBO(4,131,184, .1),
-  100:Color.fromRGBO(4,131,184, .2),
-  200:Color.fromRGBO(4,131,184, .3),
-  300:Color.fromRGBO(4,131,184, .4),
-  400:Color.fromRGBO(4,131,184, .5),
-  500:Color.fromRGBO(4,131,184, .6),
-  600:Color.fromRGBO(4,131,184, .7),
-  700:Color.fromRGBO(4,131,184, .8),
-  800:Color.fromRGBO(4,131,184, .9),
-  900:Color.fromRGBO(4,131,184, 1),
+  50: Color.fromRGBO(4, 131, 184, .1),
+  100: Color.fromRGBO(4, 131, 184, .2),
+  200: Color.fromRGBO(4, 131, 184, .3),
+  300: Color.fromRGBO(4, 131, 184, .4),
+  400: Color.fromRGBO(4, 131, 184, .5),
+  500: Color.fromRGBO(4, 131, 184, .6),
+  600: Color.fromRGBO(4, 131, 184, .7),
+  700: Color.fromRGBO(4, 131, 184, .8),
+  800: Color.fromRGBO(4, 131, 184, .9),
+  900: Color.fromRGBO(4, 131, 184, 1),
 };
 const MaterialColor appColor = MaterialColor(0xFFEFF294, color);
 const MaterialColor postItColor = MaterialColor(0xFFF2EFBD, color);
@@ -51,7 +51,7 @@ class MyStatefulWidgetState extends State<MyStatefulWidget> {
     "Laundry",
     "Kitchen",
     "Custom"
-    ];
+  ];
   final List<String> _paScales = [
     "Passive",
     "Passive-agressive",
@@ -67,6 +67,7 @@ class MyStatefulWidgetState extends State<MyStatefulWidget> {
   void updatePaScale(double value) {
     _paScale = value;
   }
+
   void updatePaTheme(String theme) {
     _paTheme = theme;
   }
@@ -113,22 +114,21 @@ class MyStatefulWidgetState extends State<MyStatefulWidget> {
       toast = FlutterI18n.translate(context, 'states.fail');
     }
     Fluttertoast.showToast(
-      msg: toast,
-      toastLength: Toast.LENGTH_LONG,
-      gravity: ToastGravity.BOTTOM,
-      timeInSecForIosWeb: 1,
-      backgroundColor: Colors.grey,
-      textColor: Colors.white,
-      fontSize: 15.0
-    );
+        msg: toast,
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.grey,
+        textColor: Colors.white,
+        fontSize: 15.0);
   }
 
   @override
   Widget build(BuildContext context) {
     // pickQuote(); // Comment out to load a random quote at startup
     return MyInheritedWidget(
-      child: widget.child,
       data: this,
+      child: widget.child,
     );
   }
 }

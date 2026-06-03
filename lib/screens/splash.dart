@@ -44,10 +44,7 @@ class _SplashScreenState extends State<SplashScreen>
       duration: const Duration(milliseconds: 1000),
       vsync: this,
     );
-    animation = CurvedAnimation(
-      parent: controller,
-      curve: Curves.easeIn
-    );
+    animation = CurvedAnimation(parent: controller, curve: Curves.easeIn);
     controller.forward();
   }
 
@@ -66,11 +63,11 @@ class _SplashScreenState extends State<SplashScreen>
 
     if (seen) {
       Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => const HomeScreen()));
+          MaterialPageRoute<void>(builder: (context) => const HomeScreen()));
     } else {
       prefs.setBool('seen', true);
       Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => const OnboardScreen()));
+          MaterialPageRoute<void>(builder: (context) => const OnboardScreen()));
     }
   }
 

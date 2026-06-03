@@ -36,10 +36,13 @@ class _AddQuoteState extends State<AddQuoteWidget> {
     return SingleChildScrollView(
       scrollDirection: Axis.vertical,
       child: Column(
-        children: <Widget> [
+        children: <Widget>[
           SizedBox(height: 10),
-          Text(FlutterI18n.translate(context, 'add_quote.add'),
-            style: TextStyle(fontSize: 20.0,),
+          Text(
+            FlutterI18n.translate(context, 'add_quote.add'),
+            style: TextStyle(
+              fontSize: 20.0,
+            ),
           ),
           SizedBox(height: 30),
           TextField(
@@ -66,48 +69,21 @@ class _AddQuoteState extends State<AddQuoteWidget> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget> [
+            children: <Widget>[
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget> [
-                  Text(FlutterI18n.translate(context, 'add_quote.pa_scale'),
-                      style: TextStyle(fontSize: 12.0,),
+                children: <Widget>[
+                  Text(
+                    FlutterI18n.translate(context, 'add_quote.pa_scale'),
+                    style: TextStyle(
+                      fontSize: 12.0,
                     ),
-                    DropdownButton<String>(
-                      value: paScales[paScale],
-                      items: paScales
-                          .map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
-                      // icon: Icon(Icons.arrow_downward),
-                      iconSize: 24,
-                      elevation: 16,
-                      style: TextStyle(
-                        color: Colors.orange
-                      ),
-                      underline: Container(),
-                      onChanged: (String? value) {
-                        if (value != null) paScale = paScales.indexOf(value);
-                      },
-                    ),
-                ],
-              ),
-              SizedBox(width: 40),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget> [
-                  Text(FlutterI18n.translate(context, 'add_quote.theme'),
-                    style: TextStyle(fontSize: 12.0,),
                   ),
                   DropdownButton<String>(
-                    value: paTheme,
-                    items: paThemes
-                        .map<DropdownMenuItem<String>>((String value) {
+                    value: paScales[paScale],
+                    items:
+                        paScales.map<DropdownMenuItem<String>>((String value) {
                       return DropdownMenuItem<String>(
                         value: value,
                         child: Text(value),
@@ -116,9 +92,38 @@ class _AddQuoteState extends State<AddQuoteWidget> {
                     // icon: Icon(Icons.arrow_downward),
                     iconSize: 24,
                     elevation: 16,
+                    style: TextStyle(color: Colors.orange),
+                    underline: Container(),
+                    onChanged: (String? value) {
+                      if (value != null) paScale = paScales.indexOf(value);
+                    },
+                  ),
+                ],
+              ),
+              SizedBox(width: 40),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Text(
+                    FlutterI18n.translate(context, 'add_quote.theme'),
                     style: TextStyle(
-                      color: Colors.orange
+                      fontSize: 12.0,
                     ),
+                  ),
+                  DropdownButton<String>(
+                    value: paTheme,
+                    items:
+                        paThemes.map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }).toList(),
+                    // icon: Icon(Icons.arrow_downward),
+                    iconSize: 24,
+                    elevation: 16,
+                    style: TextStyle(color: Colors.orange),
                     underline: Container(),
                     onChanged: (String? value) {
                       if (value != null) paTheme = value;
@@ -126,7 +131,7 @@ class _AddQuoteState extends State<AddQuoteWidget> {
                   ),
                 ],
               ),
-           ],
+            ],
           ),
           const SizedBox(height: 20),
           TextButton(

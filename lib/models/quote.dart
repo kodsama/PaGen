@@ -1,4 +1,3 @@
-
 class QuoteModel {
   int? id;
   String? locale;
@@ -33,16 +32,15 @@ class QuoteModel {
     };
   }
 
-  QuoteModel.fromMap(Map<String, dynamic> result) {
-    this.id = result['id'];
-    this.locale = result['locale'];
-    this.origin = result['origin'];
-    this.theme = result['theme'];
-    this.level = result['level'];
-    this.text = result['text'];
-    this.source = result['source'];
-    this.grade = result['grade'];
-  }
+  QuoteModel.fromMap(Map<String, dynamic> result)
+      : id = result['id'] as int?,
+        locale = result['locale'] as String?,
+        origin = result['origin'] as String?,
+        theme = result['theme'] as String?,
+        level = result['level'] as int?,
+        text = result['text'] as String?,
+        source = result['source'] as String?,
+        grade = result['grade'] as int?;
 
   @override
   String toString() {

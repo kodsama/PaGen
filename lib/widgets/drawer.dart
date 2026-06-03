@@ -31,20 +31,20 @@ class _DrawerWidgetState extends State<DrawerWidget> {
       child: ListView(
         padding: EdgeInsets.zero,
         children: <Widget>[
-          Container(
+          SizedBox(
             height: 80.0,
             child: DrawerHeader(
-              child: Text(FlutterI18n.translate(context, 'home.god_mode')),
               decoration: BoxDecoration(
                 color: appColor,
               ),
+              child: Text(FlutterI18n.translate(context, 'home.god_mode')),
             ),
           ),
           ListTile(
             title: Text(FlutterI18n.translate(context, 'home.view_demo')),
             onTap: () {
               Navigator.of(context).push(
-                MaterialPageRoute(builder: (_) => OnboardScreen()),
+                MaterialPageRoute<void>(builder: (_) => OnboardScreen()),
               );
             },
           ),
@@ -53,7 +53,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
             onTap: () {
               Navigator.pop(context);
               Navigator.of(context).push(
-                MaterialPageRoute(builder: (_) => AddQuoteScreen()),
+                MaterialPageRoute<void>(builder: (_) => AddQuoteScreen()),
               );
             },
           ),

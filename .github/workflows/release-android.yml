@@ -1,0 +1,130 @@
+# Build signed Android release artifacts and optionally deploy to Google Play.
+# Requires repository secrets (see README "Release builds").
+name: Release Android
+
+on:
+  workflow_dispatch:
+    inputs:
+      deploy_track:
+        description: Play Store track (none = build only)
+        required: true
+        default: none
+        type: choice
+        options:
+          - none
+          - internal
+          - alpha
+          - beta
+          - production
+
+concurrency:
+  group: release-android-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Build AAB and APK
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: Configure Android signing
+        env:
+          ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          ANDROID_KEY_STORE_PASSWORD: ${{ secrets.ANDROID_KEY_STORE_PASSWORD }}
+          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+        run: |
+          if [ -z "$ANDROID_KEYSTORE_BASE64" ]; then
+            echo "Missing ANDROID_KEYSTORE_BASE64 secret" >&2
+            exit 1
+          fi
+          echo "$ANDROID_KEYSTORE_BASE64" | base64 -d > "$RUNNER_TEMP/upload-keystore.jks"
+          {
+            echo "storePassword=$ANDROID_KEY_STORE_PASSWORD"
+            echo "keyPassword=$ANDROID_KEY_PASSWORD"
+            echo "keyAlias=$ANDROID_KEY_ALIAS"
+            echo "storeFile=$RUNNER_TEMP/upload-keystore.jks"
+          } > android/key.properties
+
+      - name: Install Fastlane dependencies
+        working-directory: android
+        run: |
+          gem install bundler
+          bundle install
+
+      - name: Build release artifacts
+        working-directory: android
+        run: bundle exec fastlane build_android production:true
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-release
+          retention-days: 7
+          path: |
+            build/app/outputs/flutter-apk/app-release.apk
+            build/app/outputs/bundle/release/app-release.aab
+
+  deploy:
+    name: Deploy to Play Store
+    needs: build
+    if: ${{ inputs.deploy_track != 'none' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: android-release
+          path: build/app/outputs
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.2"
+          bundler-cache: true
+          working-directory: android
+
+      - name: Write Play Store credentials
+        env:
+          PLAY_STORE_JSON_KEY: ${{ secrets.PLAY_STORE_JSON_KEY }}
+        run: |
+          if [ -z "$PLAY_STORE_JSON_KEY" ]; then
+            echo "Missing PLAY_STORE_JSON_KEY secret" >&2
+            exit 1
+          fi
+          echo "$PLAY_STORE_JSON_KEY" > "$RUNNER_TEMP/play-store.json"
+
+      - name: Deploy via Fastlane
+        working-directory: android
+        env:
+          SUPPLY_JSON_KEY: ${{ runner.temp }}/play-store.json
+        run: |
+          track="${{ inputs.deploy_track }}"
+          case "$track" in
+            internal) bundle exec fastlane deploy_android internal:true ;;
+            alpha)    bundle exec fastlane deploy_android alpha:true ;;
+            beta)     bundle exec fastlane deploy_android beta:true ;;
+            production) bundle exec fastlane deploy_android production:true ;;
+            *) echo "Unknown track: $track" >&2; exit 1 ;;
+          esac
